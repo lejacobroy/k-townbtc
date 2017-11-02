@@ -232,6 +232,23 @@ This is the true meaning of Bitcoin.</p>
         }
     });
   });*/
+$(document).ready(
+  function getrate() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    var jsonRes = JSON.parse(this.responseText);
+        if (jsonRes.hasOwnProperty('price')) {
+
+                window.rate = (jsonRes.price);
+        }
+    }
+
+  };
+  xhttp.open("GET", "https://forex.1forge.com/1.0.2/quotes?pairs=USDCAD&api_key=YdFryWLWVe65oM7DCaEw6Abd6zyZCpv6", true);
+  xhttp.send();
+
+});
   $(document).ready(
   function getbitstamp() {
   var xhttp = new XMLHttpRequest();
