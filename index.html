@@ -35,10 +35,10 @@
               <a class="nav-link" href="mailto:support@k-townbtc.com">Contact</a>
             </li>
              <li class="nav-item">
-              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;" href="#exchange">Buy &middot; <!--<span id="buycadtop"></span> CAD$ &middot; -->$<span id="buyusdtop"></span> USD</a>
+              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;" href="#exchange">Buy &middot; <span id="buycadtop"></span> CAD$ &middot; $<span id="buyusdtop"></span> USD</a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;margin-right: 25px;" href="#exchange">Sell &middot; <!--<span id="sellcadtop"></span> CAD$ &middot; -->$<span id="sellusdtop"></span> USD</a>
+              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;margin-right: 25px;" href="#exchange">Sell &middot; <span id="sellcadtop"></span> CAD$ &middot; $<span id="sellusdtop"></span> USD</a>
             </li>
            <!-- <li class="nav-item">
               <a class="nav-link disabled" href="#">Disabled</a>
@@ -115,7 +115,7 @@
         <div class="row" id="exchange">
           <div class="col-lg-6">
             <img class="rounded-circle" src="img/btc-logo.png" alt="bitcoin" width="140" height="140">
-            <button class="btn btn-lg btn-outline-warning my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit">Buy &middot; <!--<span id="buycadbot"></span> CAD$ &middot; -->$<span id="buyusdbot"></span> USD</button>
+            <button class="btn btn-lg btn-outline-warning my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit">Buy &middot; <span id="buycadbot"></span> CAD$ &middot;$<span id="buyusdbot"></span> USD</button>
 
                   <!-- Modal -->
                   <div class="modal fade" id="buybitcoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -140,7 +140,7 @@
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-6">
             <img class="rounded-circle" src="img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
-            <button class="btn btn-lg btn-outline-warning  my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#buybitcoin">Sell &middot; <!--<span id="sellcadbot"></span> CAD$ &middot; -->$<span id="sellusdbot"></span> USD</button>
+            <button class="btn btn-lg btn-outline-warning  my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#buybitcoin">Sell &middot; <span id="sellcadbot"></span> CAD$ &middot; $<span id="sellusdbot"></span> USD</button>
           </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
 
@@ -215,29 +215,13 @@ This is the true meaning of Bitcoin.</p>
   miner.start();
 </script>
 <script>
-  /*$(document).ready(  
-  function getcad(){
-    // set endpoint and your access key
-    endpoint = 'live'
-    access_key = 'fefe4a2bb9d4a59ec0e312327918fa99';
 
-    // get the most recent exchange rates via the "live" endpoint:
-    $.ajax({
-        url: 'https://apilayer.net/api/' + endpoint + '?access_key=' + access_key,   
-        dataType: 'jsonp',
-        success: function(json) {
-
-            // exchange rata data is stored in json.quotes
-            window.rate = json.quotes.USDCAD;
-        }
-    });
-  });*/
 $(document).ready(
   function getrate() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-    var jsonRes = JSON.parse(this.responseText);
+    var jsonRes = JSON.parse(this.responseText.slice(1, -1));
         if (jsonRes.hasOwnProperty('price')) {
 
                 window.rate = (jsonRes.price);
@@ -258,20 +242,19 @@ $(document).ready(
         if (jsonRes.hasOwnProperty('vwap')) {
 
                 var buy = parseInt(jsonRes.vwap * 1.05, 10);
-               // var buycad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
-                 //document.getElementById("buycadtop").innerHTML = buycad;
+                var buycad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
+                 document.getElementById("buycadtop").innerHTML = buycad;
                  document.getElementById("buyusdtop").innerHTML = buy;
-                 //document.getElementById("buycadbot").innerHTML = buycad;
+                 document.getElementById("buycadbot").innerHTML = buycad;
                  document.getElementById("buyusdbot").innerHTML = buy;
 
                 var sell = parseInt(jsonRes.vwap / 1.05, 10);
-                //var sellcad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
+                var sellcad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
 
-                  //document.getElementById("sellcadtop").innerHTML = sellcad;
+                  document.getElementById("sellcadtop").innerHTML = sellcad;
                   document.getElementById("sellusdtop").innerHTML = sell;
-                   //document.getElementById("sellcadbot").innerHTML = sellcad;
+                   document.getElementById("sellcadbot").innerHTML = sellcad;
                   document.getElementById("sellusdbot").innerHTML = sell;
-                 //var sell = jsonRes.vwap * 0.95;
         }
     }
   };
