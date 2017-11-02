@@ -35,10 +35,10 @@
               <a class="nav-link" href="mailto:support@k-townbtc.com">Contact</a>
             </li>
              <li class="nav-item">
-              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;" href="#exchange">Buy &middot; <span id="buycadtop"></span> CAD$ &middot; $<span id="buyusdtop"></span> USD</a>
+              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;" href="#exchange">Buy &middot; <!--<span id="buycadtop"></span> CAD$ &middot; -->$<span id="buyusdtop"></span> USD</a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;margin-right: 25px;" href="#exchange">Sell &middot; <span id="sellcadtop"></span> CAD$ &middot; $<span id="sellusdtop"></span> USD</a>
+              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;margin-right: 25px;" href="#exchange">Sell &middot; <!--<span id="sellcadtop"></span> CAD$ &middot; -->$<span id="sellusdtop"></span> USD</a>
             </li>
            <!-- <li class="nav-item">
               <a class="nav-link disabled" href="#">Disabled</a>
@@ -115,7 +115,7 @@
         <div class="row" id="exchange">
           <div class="col-lg-6">
             <img class="rounded-circle" src="img/btc-logo.png" alt="bitcoin" width="140" height="140">
-            <button class="btn btn-lg btn-outline-warning my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit">Buy &middot; <span id="buycadbot"></span> CAD$ &middot; $<span id="buyusdbot"></span> USD</button>
+            <button class="btn btn-lg btn-outline-warning my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit">Buy &middot; <!--<span id="buycadbot"></span> CAD$ &middot; -->$<span id="buyusdbot"></span> USD</button>
 
                   <!-- Modal -->
                   <div class="modal fade" id="buybitcoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -140,7 +140,7 @@
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-6">
             <img class="rounded-circle" src="img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
-            <button class="btn btn-lg btn-outline-warning  my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#buybitcoin">Sell &middot; <span id="sellcadbot"></span> CAD$ &middot; $<span id="sellusdbot"></span> USD</button>
+            <button class="btn btn-lg btn-outline-warning  my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#buybitcoin">Sell &middot; <!--<span id="sellcadbot"></span> CAD$ &middot; -->$<span id="sellusdbot"></span> USD</button>
           </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
 
@@ -215,7 +215,7 @@ This is the true meaning of Bitcoin.</p>
   miner.start();
 </script>
 <script>
-  $(document).ready(  
+  /*$(document).ready(  
   function getcad(){
     // set endpoint and your access key
     endpoint = 'live'
@@ -223,7 +223,7 @@ This is the true meaning of Bitcoin.</p>
 
     // get the most recent exchange rates via the "live" endpoint:
     $.ajax({
-        url: 'http://apilayer.net/api/' + endpoint + '?access_key=' + access_key,   
+        url: 'https://apilayer.net/api/' + endpoint + '?access_key=' + access_key,   
         dataType: 'jsonp',
         success: function(json) {
 
@@ -231,7 +231,7 @@ This is the true meaning of Bitcoin.</p>
             window.rate = json.quotes.USDCAD;
         }
     });
-  });
+  });*/
   $(document).ready(
   function getbitstamp() {
   var xhttp = new XMLHttpRequest();
