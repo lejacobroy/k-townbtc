@@ -249,7 +249,8 @@ $(document).ready(
                  document.getElementById("buyusdbot").innerHTML = buy;
 
                 var sell = parseInt(jsonRes.vwap / 1.05, 10);
-                var sellcad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
+                var sellcad = parseInt(jsonRes.vwap /
+                 1.05 * window.rate, 10);
 
                   document.getElementById("sellcadtop").innerHTML = sellcad;
                   document.getElementById("sellusdtop").innerHTML = sell;
