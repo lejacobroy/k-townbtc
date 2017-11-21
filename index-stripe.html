@@ -297,15 +297,15 @@ $(document).ready(
     var jsonRes= JSON.parse(this.responseText);
         if (jsonRes.hasOwnProperty('vwap')) {
 
-                var window.buy = parseInt(jsonRes.vwap * 1.05, 10);
-                var window.buycad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
+                 window.buy = parseInt(jsonRes.vwap * 1.05, 10);
+                 window.buycad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
                  document.getElementById("buycadtop").innerHTML = window.buycad;
                  document.getElementById("buyusdtop").innerHTML = window.buy;
                  document.getElementById("buycadbot").innerHTML = window.buycad;
                  document.getElementById("buyusdbot").innerHTML = window.buy;
 
-                var window.sell = parseInt(jsonRes.vwap / 1.05, 10);
-                var window.sellcad = parseInt(jsonRes.vwap /
+                 window.sell = parseInt(jsonRes.vwap / 1.05, 10);
+                 window.sellcad = parseInt(jsonRes.vwap /
                  1.05 * window.rate, 10);
 
                   document.getElementById("sellcadtop").innerHTML = window.sellcad;
