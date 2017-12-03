@@ -230,44 +230,37 @@
         	<br/>
             
             <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
-            <input type="text" id="buybtcaddress" />
+            <input type="text" id="buybtcaddress" name="btcaddress"/>
         	</span>
         	<br/>
         	<br/>
 
             <button class="btn btn-outline-secondary btn-lg" id="buyBitcoinButton" type="submit"></button>
 
+
+  <input type="hidden" id="stripeToken" name="token" />
+  <input type="hidden" id="stripeEmail" name="email" />
+  <input type="hidden" id="amountInCents" name="amount" />
+
+</form>
+
+</script>
+
 				<script>
 				var handler = StripeCheckout.configure({
 				  key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
 				  image: 'https://www.k-townbtc.com/img/headdress2.png',
 				  locale: 'auto',
-				  token: function(token) {
-            /* Use the token to create the charge with a server-side script.
-             You can access the token ID with `token.id`
-             Pass along various parameters you get from the token response
-             and your form.*/                    
-            var myData = {
-                    token: token.id,
-                    email: token.email,
-                    amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100),
-                    btcaddress: $("#buybtcaddress").val()
-                    
-            };
-            /* Make an AJAX post request using JQuery,
-               change the first parameter to your charge script*/
-            $.post("https://vast-fortress-82324.herokuapp.com/charge", myData,function (data) {
-                // if you get some results back update results
-                //$("#myForm").hide();
-                $(".results").html("Your charge was successful");
-            }).fail(function () {
-                // if things fail, tell us
-                $(".results").html("I'm sorry something went wrong");
-            })
-        }
-				});
+          token: function(token) {
+              $("#stripeToken").val(token.id);
+              $("#stripeEmail").val(token.email);
+              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
+              $("#buybtcaddress").val();
+              $("#formbuy").submit();
+            }
+          });
 
-				$('#formbuy').on('submit', function(e) {
+				$('#buyBitcoinButton').on('click', function(e) {
 				  // Open Checkout with further options:
 				  handler.open({
 				    name: 'K-TownBTC',
@@ -285,7 +278,6 @@
 				  handler.close();
 				});
 				</script>
-            </form>
 
 
           </div><!-- /.col-lg-4 -->
