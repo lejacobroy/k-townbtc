@@ -235,7 +235,7 @@
         	<br/>
         	<br/>
 
-            <button class="btn btn-outline-secondary btn-lg" id="buyBitcoinButton"></button>
+            <button class="btn btn-outline-secondary btn-lg" id="buyBitcoinButton" type="submit"></button>
 
 				<script>
 				var handler = StripeCheckout.configure({
@@ -266,7 +266,7 @@
         }
 				});
 
-				document.getElementById('buyBitcoinButton').addEventListener('click', function(e) {
+				$('#formbuy').on('submit', function(e) {
 				  // Open Checkout with further options:
 				  handler.open({
 				    name: 'K-TownBTC',
