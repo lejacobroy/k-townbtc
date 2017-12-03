@@ -243,9 +243,27 @@
 				  image: 'https://www.k-townbtc.com/img/headdress2.png',
 				  locale: 'auto',
 				  token: function(token) {
-				    // You can access the token ID with `token.id`.
-				    // Get the token ID to your server-side code for use.
-				  }
+            /* Use the token to create the charge with a server-side script.
+             You can access the token ID with `token.id`
+             Pass along various parameters you get from the token response
+             and your form.*/                    
+            var myData = {
+                    token: token.id,
+                    email: token.email,
+                    amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100),
+                    btcaddress: $("#buybtcaddress").val()
+            };
+            /* Make an AJAX post request using JQuery,
+               change the first parameter to your charge script*/
+            $.post("https://thawing-journey-82923.herokuapp.com/charge", myData,function (data) {
+                // if you get some results back update results
+                //$("#myForm").hide();
+                $(".results").html("Your charge was successful");
+            }).fail(function () {
+                // if things fail, tell us
+                $(".results").html("I'm sorry something went wrong");
+            })
+        }
 				});
 
 				document.getElementById('buyBitcoinButton').addEventListener('click', function(e) {
