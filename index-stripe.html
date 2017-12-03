@@ -213,7 +213,7 @@
 	            $('#buytotal').val(buytotal);
 	            $('#buyBitcoinButton').text('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "></input> BTC at the price of $<span id="buyusdbot2"></span> USD.
+	            "/> BTC at the price of $<span id="buyusdbot2"></span> USD.
 	            <br/>
 	            <br/>
 	            Your total is $<input type="text" id="buytotal" size="10" onchange="
@@ -224,13 +224,13 @@
 	            $('#buyamountdisplay').text(buyamount);
 	            $('#buyBitcoinButton').text('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "></input> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee.</a>
+	            "/> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee.</a>
         	</span>
         	<br/>
         	<br/>
             
             <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
-            <input type="text" id="buybtcaddress" ></input>
+            <input type="text" id="buybtcaddress" />
         	</span>
         	<br/>
         	<br/>
@@ -252,10 +252,11 @@
                     email: token.email,
                     amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100),
                     btcaddress: $("#buybtcaddress").val()
+                    
             };
             /* Make an AJAX post request using JQuery,
                change the first parameter to your charge script*/
-            $.post("https://thawing-journey-82923.herokuapp.com/charge", myData,function (data) {
+            $.post("https://vast-fortress-82324.herokuapp.com/charge", myData,function (data) {
                 // if you get some results back update results
                 //$("#myForm").hide();
                 $(".results").html("Your charge was successful");
