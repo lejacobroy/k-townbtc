@@ -54,7 +54,7 @@
                  buyamount = 1;
                  buytotal = roundUp((buy * 1.06), 100);
                  $("#buytotal").val(buytotal);
-                 $('#buyBitcoinButton').text('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' USD');
+                 $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' USD');
 
 				         $("#sellusdbot").text(sell);
                  $("#sellusdbot2").text(sell);
@@ -212,7 +212,7 @@
 	            $('#buyamountdisplay').text(buyamount);
 	            buytotal = roundUp((buyamount * buy * 1.06), 100);
 	            $('#buytotal').val(buytotal);
-	            $('#buyBitcoinButton').text('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
+	            $('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
 	            "/> BTC at the price of $<span id="buyusdbot2"></span> USD.
 	            <br/>
@@ -223,7 +223,7 @@
 	            buyamount = roundUp((buytotal / buy / 1.06), 10000);
 	            $('#buyamount').val(buyamount);
 	            $('#buyamountdisplay').text(buyamount);
-	            $('#buyBitcoinButton').text('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
+	            $('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
 	            "/> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee.</a>
         	   </span>
