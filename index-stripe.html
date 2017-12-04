@@ -36,9 +36,24 @@
   var buytotal;
   var sellamount;
   var selltotal;
+  function htmlEncode(value){
+    if (value) {
+      return jQuery(‘<div />’).text(value).html();
+    } else {
+      return ”;
+    }
+  }
+
+  function htmlDecode(value) {
+    if (value) {
+      return $(‘<div />’).html(value).text();
+    } else {
+      return ”;
+    }
+    }
 
   function roundUp(num, precision) {
-  return Math.ceil(num * precision) / precision
+    return Math.ceil(num * precision) / precision
   }
 
   $(document).ready(
@@ -262,7 +277,8 @@
               metadata.btcaddress = $('#buybtcaddress').val();
               metadata.btcamount = $('#buyamount').val();
               metadata.btcprice = buy;
-              return (JSON.stringify(metadata)).html();
+              var output = htmlEncode(JSON.stringify(metadata));
+              return output;
               }
               getmetadata();
               $("#formbuy").submit();
