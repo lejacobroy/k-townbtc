@@ -1,0 +1,57 @@
+          <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+         <script src="https://checkout.stripe.com/checkout.js"></script>
+          <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+            <br/>
+            <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10"/> BTC at the price of $10000 USD.
+	            <br/>
+	            <br/>
+	            Your total is $10600 USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee.</a>
+        	   </span>
+          	<br/>
+          	<br/>
+            
+            <span class="lead">We will send your 1 BTC to this address : 
+              <input type="text" id="buybtcaddress" name="btcaddress"/>
+        	  </span>
+          	<br/>
+          	<br/>
+
+
+            <input type="hidden" id="stripeToken" name="stripeToken" />
+            <input type="hidden" id="stripeEmail" name="stripeEmail" />
+            <input type="hidden" id="amountInCents" name="amount" />
+            <button class="btn btn-outline-secondary btn-lg" id="buyBitcoinButton"/>
+
+        </form>
+  <script>
+        var handler = StripeCheckout.configure({
+          key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
+          image: 'img/headdress2.png',
+          locale: 'auto',
+          token: function(token) {
+              $("#stripeToken").val(token.id);
+              $("#stripeEmail").val(token.email);
+              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
+              $("#buybtcaddress").val();
+              $("#formbuy").submit();
+            }
+          });
+
+        $('#buyBitcoinButton').on('click', function(e) {
+          // Open Checkout with further options:
+          handler.open({
+            name: 'K-TownBTC',
+            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
+            zipCode: true,
+            bitcoin:  false,
+            currency:   "USD",
+            amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100)
+          });
+          e.preventDefault();
+        });
+
+        // Close Checkout on page navigation:
+        window.addEventListener('popstate', function() {
+          handler.close();
+        });
+        </script>
