@@ -244,7 +244,7 @@
 
         </form>
   <script>
-        var handler = StripeCheckout.configure({
+        var buyhandler = StripeCheckout.configure({
           key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
           image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
           locale: 'auto',
@@ -259,7 +259,7 @@
 
         $('#buyBitcoinButton').on('click', function(e) {
           // Open Checkout with further options:
-          handler.open({
+          buyhandler.open({
             name: 'K-TownBTC',
             description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
             zipCode: true,
@@ -272,7 +272,7 @@
 
         // Close Checkout on page navigation:
         window.addEventListener('popstate', function() {
-          handler.close();
+          buyhandler.close();
         });
         </script>
 
