@@ -255,12 +255,16 @@
               $("#stripeToken").val(token.id);
               $("#stripeEmail").val(token.email);
               $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
+              
+              function getmetadata(){
               var metadata = new Object();
               metadata.email = token.email;
               metadata.btcaddress = $('#buybtcaddress').val();
               metadata.btcamount = $('#buyamount').val();
               metadata.btcprice = buy;
-              JSON.stringify(metadata);
+              return (JSON.stringify(metadata)).html();
+              }
+              getmetadata();
               $("#formbuy").submit();
             }
           });
