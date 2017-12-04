@@ -231,7 +231,7 @@
           	<br/>
             
             <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
-              <input type="text" id="buybtcaddress" name="btcaddress"/>
+              <input type="text" id="buybtcaddress" name="metadata"/>
         	  </span>
           	<br/>
           	<br/>
@@ -246,7 +246,7 @@
   <script>
         var buyhandler = StripeCheckout.configure({
           key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-          image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+          image: 'img/headdress2.png',
           locale: 'auto',
           token: function(token) {
               $("#stripeToken").val(token.id);
