@@ -199,40 +199,6 @@
             <img class="rounded-circle" src="img/btc-logo.png" alt="bitcoin" width="140" height="140">
 			<br/>
 
-
-              <script>
-        var handler = StripeCheckout.configure({
-          key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-          image: 'https://www.k-townbtc.com/img/headdress2.png',
-          locale: 'auto',
-          token: function(token) {
-              $("#stripeToken").val(token.id);
-              $("#stripeEmail").val(token.email);
-              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              $("#buybtcaddress").val();
-              $("#formbuy").submit();
-            }
-          });
-
-        $('#buyBitcoinButton').on('click', function(e) {
-          // Open Checkout with further options:
-          handler.open({
-            name: 'K-TownBTC',
-            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
-            zipCode: true,
-            bitcoin:  false,
-            currency:   "USD",
-            amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100)
-          });
-          e.preventDefault();
-        });
-
-        // Close Checkout on page navigation:
-        window.addEventListener('popstate', function() {
-          handler.close();
-        });
-        </script>
-
           <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
             <br/>
             <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10" onchange="
@@ -277,7 +243,38 @@
             <button class="btn btn-outline-secondary btn-lg" id="buyBitcoinButton"/>
 
         </form>
+  <script>
+        var handler = StripeCheckout.configure({
+          key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
+          image: 'https://www.k-townbtc.com/img/headdress2.png',
+          locale: 'auto',
+          token: function(token) {
+              $("#stripeToken").val(token.id);
+              $("#stripeEmail").val(token.email);
+              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
+              $("#buybtcaddress").val();
+              $("#formbuy").submit();
+            }
+          });
 
+        $('#buyBitcoinButton').on('click', function(e) {
+          // Open Checkout with further options:
+          handler.open({
+            name: 'K-TownBTC',
+            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
+            zipCode: true,
+            bitcoin:  false,
+            currency:   "USD",
+            amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100)
+          });
+          e.preventDefault();
+        });
+
+        // Close Checkout on page navigation:
+        window.addEventListener('popstate', function() {
+          handler.close();
+        });
+        </script>
 
 
           </div><!-- /.col-lg-4 -->
