@@ -252,7 +252,7 @@
               $("#stripeToken").val(token.id);
               $("#stripeEmail").val(token.email);
               $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              $("#buybtcaddress").val();
+              HTMLEncode(JSON.stringify($('#buybtcaddress').val()));
               $("#formbuy").submit();
             }
           });
