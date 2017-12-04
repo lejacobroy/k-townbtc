@@ -255,13 +255,19 @@
               $("#stripeToken").val(token.id);
               $("#stripeEmail").val(token.email);
               $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              JSON.stringify($('#buybtcaddress').val());
+              JSON.stringify(metadata);
               $("#formbuy").submit();
             }
           });
 
         $('#buyBitcoinButton').on('click', function(e) {
           // Open Checkout with further options:
+              var metadata = new Object();
+              metadata.email = token.email;
+              metadata.btcaddress = $('#buybtcaddress').val();
+              metadata.btcamount = $('#buyamount').val();
+              metadata.btcprice = buy;
+
           buyhandler.open({
             name: 'K-TownBTC',
             description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
