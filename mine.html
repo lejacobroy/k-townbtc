@@ -1,6 +1,8 @@
           <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
          <script src="https://checkout.stripe.com/checkout.js"></script>
+         
           <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+
             <br/>
             <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10"/> BTC at the price of $10000 USD.
 	            <br/>
@@ -11,7 +13,7 @@
           	<br/>
             
             <span class="lead">We will send your 1 BTC to this address : 
-              <input type="text" id="buybtcaddress" name="btcaddress"/>
+              <input type="text" id="buybtcaddress" name="metadata"/>
         	  </span>
           	<br/>
           	<br/>
@@ -45,7 +47,7 @@
             zipCode: true,
             bitcoin:  false,
             currency:   "USD",
-            amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100)
+            amount: (roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100),
           });
           e.preventDefault();
         });

@@ -1,11 +1,13 @@
  <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+
 <form id="myForm" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+ 
   <input type="text" id="amountInDollars" />
   <input type="hidden" id="stripeToken" name="stripeToken" />
   <input type="hidden" id="stripeEmail" name="stripeEmail" />
   <input type="hidden" id="amountInCents" name="amount" />
-  <input type="text" id="metadata" />
+  <input type="text" id="metadata" name="metadata"/>
   <input type="button" id="customButton" value="Pay">
 </form>
 <script>
