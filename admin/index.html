@@ -149,13 +149,13 @@
          <nav class="navbar navbar-dark bg-dark">
          	<ul class="navbar-nav mr-auto">
          		<li class="nav-item">
-				  <a class="navbar-brand nav-link active" href="/">
+				  <a class="navbar-brand nav-link" href="/">
 				    <img src="../img/US.png" width="30" height="30" class="d-inline-block align-top" alt="">
 				    USD
 				  </a>
 				</li>
 				<li class="nav-item  active">
-				  <a class="navbar-brand nav-link" href="/CAD.html">
+				  <a class="navbar-brand nav-link active" href="/CAD.html">
 				    <img src="../img/CA.png" width="30" height="30" class="d-inline-block align-top" alt="">
 				    CAD
 				  </a>
@@ -236,34 +236,34 @@
             <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10" onchange="
 
 	             if($('#buyamount').val()>0){
-		            buyamount=Number($('#buyamount').val());
+		            window['buyamount']=Number($('#buyamount').val());
     		        }else{
     		        	$('#buyamount').val('1');
-    		        	buyamount=1;
+    		        	window['buyamount']=1;
     		        }
-	            $('#buyamountdisplay').text(buyamount);
-              buypercent= Number($('#buypercent').val());
-	            buytotal = roundUp(((buyamount+currentfee) * buy * ((buypercent/100) +1)), 100);
-	            $('#buytotal').val(buytotal);
-	            $('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+	            $('#buyamountdisplay').text(window['buyamount']);
+              window['buypercent']= Number($('#buypercent').val());
+	            window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
+	            $('#buytotal').val(window['buytotal']);
+	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
 
 	            "/> BTC at the price of $<span id="buyCADbot2"></span> CAD.
 	            <br/>
 	            <br/>
 	            Your total is $<input type="text" id="buytotal" size="10" onchange="
 
-	            buytotal=$('#buytotal').val();
-              buypercent= $('#buypercent').val();
-	            buyamount = roundUp((buytotal / buy / ((buypercent/100) +1))-currentfee, 10000);
-	            $('#buyamount').val(buyamount);
-	            $('#buyamountdisplay').text(buyamount);
-	            $('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+	            window['buytotal']=Number($('#buytotal').val());
+              window['buypercent'] = Number($('#buypercent').val());
+	            window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / ((window['buypercent']/100) + 1))-window['currentfee'], 10000);
+	            $('#buyamount').val(window['buyamount']);
+	            $('#buyamountdisplay').text(window['buyamount']);
+	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
 
 	            "/> CAD, including the <input type="text" id="buypercent" size="2" onchange="
-              buyamount=Number($('#buyamount').val());
-              buypercent= Number($('#buypercent').val());
-              buytotal = roundUp(((buyamount+currentfee)* buy * ((buypercent/100)+1)), 100);
-              $('#buytotal').val(buytotal);
+              window['buyamount']=Number($('#buyamount').val());
+              window['buypercent']= Number($('#buypercent').val());
+              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
+              $('#buytotal').val(window['buytotal']);
 
               "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span><a href="#" data-toggle="modal" data-target="#bitcoinfees"> Bitcoin fee.</a>
         	   </span>
@@ -274,18 +274,18 @@
                <input type="text" id="buybtcaddress" name="buybtcaddress"/>
                <br/>
               <br/>
-               With the <form><input type="radio" name="radiofee" checked onchange="currentfee = fastestFee;
-               $('#buybitcoinfees').text(currentfee);
-               buytotal = roundUp(((Number($('#buyamount').val())+fcurrentee) * buy * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(buytotal);
-              ">Fastest Fee</span>, <input type="radio" name="radiofee" onchange="fcurrentee = halfHourFee;
-               $('#buybitcoinfees').text(currentfee);
-               buytotal = roundUp(((Number($('#buyamount').val())+currentfee) * buy * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(buytotal);
-               ">Half-Hour Fee</span>, or the <input type="radio" name="radiofee" onchange="currentfee = hourFee;
-               $('#buybitcoinfees').text(currentfee);
-               buytotal = roundUp(((Number($('#buyamount').val())+currentfee) * buy * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(buytotal);
+               With the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
+               $('#buybitcoinfees').text(window['currentfee']);
+               window['buytotal'] = roundUp(((Number($('#buyamount').val()) + window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
+              $('#buytotal').val(window['buytotal']);
+              ">Fastest Fee</span>, <input type="radio" name="radiofee" onchange="window['currentfee'] = window['halfHourFee'];
+               $('#buybitcoinfees').text(window['currentfee']);
+               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
+              $('#buytotal').val(window['buytotal']);
+               ">Half-Hour Fee</span>, or the <input type="radio" name="radiofee" onchange="window['currentfee'] = window['hourFee'];
+               $('#buybitcoinfees').text(window['currentfee']);
+               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
+              $('#buytotal').val(window['buytotal']);
                ">Hour Fee</span></form>
         	  </span>
 
