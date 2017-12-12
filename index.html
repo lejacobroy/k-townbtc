@@ -239,17 +239,17 @@ $(document).ready(
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
     var jsonRes= JSON.parse(this.responseText);
-        if (jsonRes.hasOwnProperty('vwap')) {
+        if (jsonRes.hasOwnProperty('last')) {
 
-                var buy = parseInt(jsonRes.vwap, 10);
-                var buycad = parseInt(jsonRes.vwap * window.rate, 10);
+                var buy = parseInt(jsonRes.last, 10);
+                var buycad = parseInt(jsonRes.last * window.rate, 10);
                  document.getElementById("buycadtop").innerHTML = buycad;
                  document.getElementById("buyusdtop").innerHTML = buy;
                  document.getElementById("buycadbot").innerHTML = buycad;
                  document.getElementById("buyusdbot").innerHTML = buy;
 
-                var sell = parseInt(jsonRes.vwap, 10);
-                var sellcad = parseInt(jsonRes.vwap * window.rate, 10);
+                var sell = parseInt(jsonRes.last, 10);
+                var sellcad = parseInt(jsonRes.last * window.rate, 10);
 
                   document.getElementById("sellcadtop").innerHTML = sellcad;
                   document.getElementById("sellusdtop").innerHTML = sell;

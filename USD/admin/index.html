@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../img/favicon.ico">
+    <link rel="icon" href="../../img/favicon.ico">
 
     <title>K-Town BTC</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../../css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/carousel.css" rel="stylesheet">
+    <link href="../../css/carousel.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
@@ -27,8 +27,8 @@
   var buy;
   var sell;
   var rate;
-  var buycad;
-  var sellcad;
+  var buyUSD;
+  var sellUSD;
   var buyamount;
   var buytotal;
   var sellamount;
@@ -65,14 +65,12 @@
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
     var jsonRes = JSON.parse(this.responseText);
-        if (jsonRes.hasOwnProperty('index')) {
+        if (jsonRes.hasOwnProperty('last')) {
 
-                cbix_value = (jsonRes.index.value);
-                //alert(cbix_value);
-                 buy = roundUp(jsonRes.index.value, 1000);
-                 sell = roundUp(jsonRes.index.value, 1000);
-                 $("#buyCADbot").text(buy);
-                 $("#buyCADbot2").text(buy);
+                 buy = roundUp(jsonRes.last, 1000);
+                 sell = roundUp(jsonRes.last, 1000);
+                 $("#buyUSDbot").text(buy);
+                 $("#buyUSDbot2").text(buy);
                  $("#buyamountdisplay").text("1");
                  buyamount = 1;
                  buypercent=6;
@@ -80,20 +78,20 @@
                  $('#buybitcoinfees').text(fastestFee);
                  buytotal = roundUp((buy * 1.06), 100);
                  $("#buytotal").val(buytotal);
-                 $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' CAD');
+                 $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' USD');
 
-                 $("#sellCADbot").text(sell);
-                 $("#sellCADbot2").text(sell);
+                 $("#sellUSDbot").text(sell);
+                 $("#sellUSDbot2").text(sell);
                  $("#sellamountdisplay").text(sell);
                  sellamount = 1;
                  selltotal = roundUp((sell * 1.06), 100);
                  $("#selltotal").val(selltotal);
-                 $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
+                 $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
         }
     }
 
   };
-  xhttp.open("GET", "https://api.cbix.ca/v1/index", true);
+  xhttp.open("GET", "https://www.bitstamp.net/api/ticker", true);
   xhttp.send();
 
     var fee = new XMLHttpRequest();
@@ -143,20 +141,20 @@
               <a class="nav-link" href="mailto:support@k-townbtc.com">Contact</a>
             </li>
             <li class="nav-item">
-            	<h4 style="position:relative;left:20px;top:3px;"><span class="badge badge-secondary">$<span id="buyCADbot"></span> CAD</span></h4>
+            	<h4 style="position:relative;left:20px;top:3px;"><span class="badge badge-secondary">$<span id="buyUSDbot"></span> USD</span></h4>
             </li>
           </ul>
          <nav class="navbar navbar-dark bg-dark">
          	<ul class="navbar-nav mr-auto">
-         		<li class="nav-item">
-				  <a class="navbar-brand nav-link" href="../USD/admin/">
-				    <img src="../img/US.png" width="30" height="30" class="d-inline-block align-top" alt="">
+         		<li class="nav-item active">
+				  <a class="navbar-brand nav-link active" href="../../USD/admin/">
+				    <img src="../../img/US.png" width="30" height="30" class="d-inline-block align-top" alt="">
 				    USD
 				  </a>
 				</li>
-				<li class="nav-item  active">
-				  <a class="navbar-brand nav-link active" href="#">
-				    <img src="../img/CA.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				<li class="nav-item">
+				  <a class="navbar-brand nav-link" href="../../admin/">
+				    <img src="../../img/CA.png" width="30" height="30" class="d-inline-block align-top" alt="">
 				    CAD
 				  </a>
 				</li>
@@ -166,7 +164,7 @@
       </nav>
     </header>
     <div style="overflow: visible;z-index:99999;position: fixed;top:-18px;left: 5px;">
-      <img src="../img/headdress2.png" width="100px"/>
+      <img src="../../img/headdress2.png" width="100px"/>
     </div>
     <main role="main">
 
@@ -178,7 +176,7 @@
         </ol>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img class="first-slide" src="../img/map5.png" alt="First slide">
+            <img class="first-slide" src="../../img/map5.png" alt="First slide">
             <div class="container">
               <div class="carousel-caption">
                 <h1>Hassle-Free Exchange</h1>
@@ -188,7 +186,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img class="third-slide" src="../img/trailer.png" alt="Second slide">
+            <img class="third-slide" src="../../img/trailer.png" alt="Second slide">
             <div class="container">
               <div class="carousel-caption">
                 <h1>Best-In-Class Customer Service</h1>
@@ -198,7 +196,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img class="second-slide" src="../img/chart.png" alt="Third slide">
+            <img class="second-slide" src="../../img/chart.png" alt="Third slide">
             <div class="container">
               <div class="carousel-caption">
                 <h1>An Entity you can Trust</h1>
@@ -228,7 +226,7 @@
         <div class="row" id="buybitcoin">
           <div class="col-lg-12" style="text-align: center;">
           	<h3><span class="badge badge-secondary">Buy Bitcoin Calculator</span></h3><br/>
-            <img class="rounded-circle" src="../img/btc-logo.png" alt="bitcoin" width="140" height="140">
+            <img class="rounded-circle" src="../../img/btc-logo.png" alt="bitcoin" width="140" height="140">
 			<br/>
 
           <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
@@ -245,9 +243,9 @@
               window['buypercent']= Number($('#buypercent').val());
 	            window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
 	            $('#buytotal').val(window['buytotal']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "/> BTC at the price of $<span id="buyCADbot2"></span> CAD.
+	            "/> BTC at the price of $<span id="buyUSDbot2"></span> USD.
 	            <br/>
 	            <br/>
 	            Your total is $<input type="text" id="buytotal" size="10" onchange="
@@ -257,9 +255,9 @@
 	            window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / ((window['buypercent']/100) + 1))-window['currentfee'], 10000);
 	            $('#buyamount').val(window['buyamount']);
 	            $('#buyamountdisplay').text(window['buyamount']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "/> CAD, including the <input type="text" id="buypercent" size="2" onchange="
+	            "/> USD, including the <input type="text" id="buypercent" size="2" onchange="
               window['buyamount']=Number($('#buyamount').val());
               window['buypercent']= Number($('#buypercent').val());
               window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
@@ -271,7 +269,7 @@
           	<br/>
             
             <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
-               <input type="text" id="buybtcaddress" name="buybtcaddress"/>
+               <input type="text" id="buybtUSDdress" name="buybtUSDdress"/>
                <br/>
               <br/>
                With the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
@@ -301,7 +299,7 @@
   <script>
         var buyhandler = StripeCheckout.configure({
           key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-          image: '../img/headdress2.png',
+          image: '../../img/headdress2.png',
           locale: 'auto',
           token: function(token) {
               $("#stripeToken").val(token.id);
@@ -311,7 +309,7 @@
               function getmetadata(){
               var metadata = new Object();
               metadata.email = token.email;
-              metadata.btcaddress = $('#buybtcaddress').val();
+              metadata.btUSDdress = $('#buybtUSDdress').val();
               metadata.btcamount = $('#buyamount').val();
               metadata.btcprice = buy;
               var output = htmlEncode(JSON.stringify(metadata));
@@ -327,10 +325,10 @@
 
           buyhandler.open({
             name: 'K-TownBTC',
-            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " CAD",
+            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
             zipCode: true,
             bitcoin:  false,
-            currency:   "CAD",
+            currency:   "USD",
             amount: roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100,
           });
           e.preventDefault();
@@ -349,7 +347,7 @@
           <div class="row" id="sellbitcoin">
           <div class="col-lg-12" style="text-align: center;">
           	<h3><span class="badge badge-secondary">Sell Bitcoin</span></h3><br/>
-            <img class="rounded-circle" src="../img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
+            <img class="rounded-circle" src="../../img/USD-logo.png" alt="Generic placeholder image" width="140" height="140">
             <form id="formsell" action="https://thawing-journey-82923.herokuapp.com/charge" method="POST">
 	            <br/>
 	            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
@@ -362,9 +360,9 @@
 		            $('#sellamountdisplay').text(sellamount);
 		            selltotal = roundUp((sellamount * sell * 1.06), 100);
 		            $('#selltotal').val(selltotal);
-		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
+		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
 
-		            "></input> BTC at the price of $<span id="sellCADbot2"></span> CAD.
+		            "></input> BTC at the price of $<span id="sellUSDbot2"></span> USD.
 		            <br/>
 		            <br/>
 		            We will send you $<input type="text" id="selltotal" size="10" onchange="
@@ -373,9 +371,9 @@
 		            sellamount = roundUp((selltotal / sell / 1.06), 10000);
 		            $('#sellamount').val(sellamount);
 		            $('#sellamountdisplay').text(selltotal);
-		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
+		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
 
-		            "></input> CAD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees" >transaction fee.</a>
+		            "></input> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees" >transaction fee.</a>
 -->
 
 					<!-- Modal -->
@@ -403,7 +401,7 @@
 	        	</span>
 	        	<br/>
 	        	<br/>
-		            <span class="lead">Enter your prefered method of payment, to send $<span id="sellamountdisplay"></span> CAD : <input type="text" id="sellmethod" ></input>
+		            <span class="lead">Enter your prefered method of payment, to send $<span id="sellamountdisplay"></span> USD : <input type="text" id="sellmethod" ></input>
 
 		        <br/>	<br/>* Be sure to select the <strong><em>Bitcoin</em></strong> tab on the checkout page to pay by Bitcoin.
 	        	</span>
@@ -414,7 +412,7 @@
 					<script>
 					var handler = StripeCheckout.configure({
 					  key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-					  image: 'https://www.k-townbtc.com/../img/headdress2.png',
+					  image: 'https://www.k-townbtc.com/../../img/headdress2.png',
 					  locale: 'auto',
 					  token: function(token) {
 					    // You can access the token ID with `token.id`.
@@ -426,7 +424,7 @@
 					  // Open Checkout with further options:
 					  handler.open({
 					    name: 'K-TownBTC',
-					    description: "Buy $" + roundUp(($('#sellamount').val() * sell * 1.06), 100) + " CAD for " + $('#sellamount').val() + " BTC",
+					    description: "Buy $" + roundUp(($('#sellamount').val() * sell * 1.06), 100) + " USD for " + $('#sellamount').val() + " BTC",
 					    zipCode: true,
 					    bitcoin: 	true,
 					    currency: 	"BTC",
@@ -458,7 +456,7 @@
 				<p class="lead">Note : Because we use a partner, <a href="https://www.stripe.com">stripe</a>, to handle the online transactions, we can only garantee the security and anonymity of in-person transaction.
           </div>
           <div class="col-md-5 order-md-1">
-            <img class="featurette-image img-fluid mx-auto" src="../img/privacy.png" alt="Generic placeholder image">
+            <img class="featurette-image img-fluid mx-auto" src="../../img/privacy.png" alt="Generic placeholder image">
           </div>
         </div>
         <hr class="featurette-divider">
@@ -470,7 +468,7 @@
           </div>
           <div class="col-md-5">
             <a href="https://bitcoin.org/en/">
-            <img class="featurette-image img-fluid mx-auto" src="../img/btc-logo.png" alt="Generic placeholder image">
+            <img class="featurette-image img-fluid mx-auto" src="../../img/btc-logo.png" alt="Generic placeholder image">
           </a>
           </div>
         </div>
@@ -484,7 +482,7 @@
           </div>
           <div class="col-md-5 order-md-1">
             <a href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381">
-            <img class="featurette-image img-fluid mx-auto" src="../img/map.png" alt="Generic placeholder image">
+            <img class="featurette-image img-fluid mx-auto" src="../../img/map.png" alt="Generic placeholder image">
           </a>
           </div>
         </div>
