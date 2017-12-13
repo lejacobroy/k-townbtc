@@ -105,7 +105,7 @@
                 fastestFee = (jsonRes.fastestFee) * 226 / 100000000;
                 halfHourFee = (jsonRes.halfHourFee) * 226 / 100000000;
                 hourFee = (jsonRes.hourFee) * 226 / 100000000;
-                buytotal = roundUp((buy * 1.06) + fastestFee, 100);
+                buytotal = roundUp((buy + fastestFee) * 1.06, 100);
                 $("#buytotal").val(buytotal);
                 currentfee = fastestFee;
                 $('#buybitcoinfees').text(currentfee);
@@ -241,7 +241,6 @@
     		        	$('#buyamount').val('1');
     		        	window['buyamount']=1;
     		        }
-	            $('#buyamountdisplay').text(window['buyamount']);
               window['buypercent']= Number($('#buypercent').val());
 	            window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
 	            $('#buytotal').val(window['buytotal']);
@@ -256,7 +255,6 @@
               window['buypercent'] = Number($('#buypercent').val());
 	            window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / ((window['buypercent']/100) + 1))-window['currentfee'], 10000);
 	            $('#buyamount').val(window['buyamount']);
-	            $('#buyamountdisplay').text(window['buyamount']);
 	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
 
 	            "/> CAD, including the <input type="text" id="buypercent" size="2" onchange="
@@ -265,24 +263,31 @@
               window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
               $('#buytotal').val(window['buytotal']);
 
-              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span><a href="#" data-toggle="modal" data-target="#bitcoinfees"> Bitcoin fee.</a>
+              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
         	   </span>
           	<br/>
           	<br/>
             
-            <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
+           <!-- <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
                <input type="text" id="buybtcaddress" name="buybtcaddress"/>
                <br/>
-              <br/>
-               With the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
+              <br/>-->
+              <span class="lead">
+               Process the transaction with the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
                $('#buybitcoinfees').text(window['currentfee']);
                window['buytotal'] = roundUp(((Number($('#buyamount').val()) + window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
               $('#buytotal').val(window['buytotal']);
-              ">Fastest Fee</span>, <input type="radio" name="radiofee" onchange="window['currentfee'] = window['halfHourFee'];
+              ">Fastest Fee</span>,
+
+
+              <input type="radio" name="radiofee" onchange="window['currentfee'] = window['halfHourFee'];
                $('#buybitcoinfees').text(window['currentfee']);
                window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
               $('#buytotal').val(window['buytotal']);
-               ">Half-Hour Fee</span>, or the <input type="radio" name="radiofee" onchange="window['currentfee'] = window['hourFee'];
+               ">Half-Hour Fee</span>,
+
+
+               or the <input type="radio" name="radiofee" onchange="window['currentfee'] = window['hourFee'];
                $('#buybitcoinfees').text(window['currentfee']);
                window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
               $('#buytotal').val(window['buytotal']);
@@ -379,11 +384,11 @@
 -->
 
 					<!-- Modal -->
-					<div class="modal fade" id="transactionfees" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal fade" id="transactionfees" tabindex="-1" role="dialog" aria-labelledby="transactionLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel">Transaction Fees</h5>
+					        <h5 class="modal-title" id="transactionLabel">Transaction Fees</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -392,6 +397,29 @@
 					        Unlike other Bitcoin ATM, we offer a smaller fee of only 6% to cover our expenses.
 					        <br/><br/>
 					        We can acheive such a lower fee, because we reside on the Kahnawake Reserve, thus we have no taxes to fill nor do we need your ID.
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Understood!</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					<!-- Modal -->
+					<div class="modal fade" id="bitcoinfees" tabindex="-1" role="dialog" aria-labelledby="bitcoinfeeLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="bitcoinfeeLabel">Bitcoin Fees</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	On the Bitcoin Network, fees help to process transactions faster, and make the whole network more secure.
+					      	<br/>
+					      	<br/>
+					      	As explained by <a href="http://bitcoinfees.com">bitcoinfees.com</a> : <br/>
+							&quot;The fees go to the miners to incentivise them to keep mining, which in turn keeps the Bitcoin network secure.&quot;
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Understood!</button>
