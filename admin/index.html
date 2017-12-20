@@ -105,7 +105,7 @@
                 fastestFee = (jsonRes.fastestFee) * 226 / 100000000;
                 halfHourFee = (jsonRes.halfHourFee) * 226 / 100000000;
                 hourFee = (jsonRes.hourFee) * 226 / 100000000;
-                buytotal = roundUp((buy + fastestFee) * 1.06, 100);
+                buytotal = roundUp((1 + fastestFee) * buy * 1.06, 100);
                 $("#buytotal").val(buytotal);
                 currentfee = fastestFee;
                 $('#buybitcoinfees').text(currentfee);

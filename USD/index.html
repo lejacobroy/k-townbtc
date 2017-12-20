@@ -104,7 +104,7 @@
                 fastestFee = (jsonRes.fastestFee) * 226 / 100000000;
                 halfHourFee = (jsonRes.halfHourFee) * 226 / 100000000;
                 hourFee = (jsonRes.hourFee) * 226 / 100000000;
-                buytotal = roundUp((buy + fastestFee) * 1.06, 100);
+                buytotal = roundUp((1 + fastestFee) * buy * 1.06, 100);
                 $("#buytotal").val(buytotal);
                 currentfee = fastestFee;
                 $('#buybitcoinfees').text(currentfee);
@@ -137,6 +137,9 @@
             </li>-->
              <li class="nav-item">
               <a class="nav-link" href="https://www.google.ca/maps/place/45°23'50.2%22N+73°37'17.5%22W/@45.3972727,-73.623732,797m/data=!3m2!1e3!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d45.3972687!4d-73.6215381">Where are we?</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="hours.html">Opening Hours</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="mailto:support@k-townbtc.com">Contact</a>
