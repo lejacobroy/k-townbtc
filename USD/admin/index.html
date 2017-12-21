@@ -27,15 +27,10 @@
   var buy;
   var sell;
   var rate;
-  var buyUSD;
-  var sellUSD;
   var buyamount;
   var buytotal;
   var sellamount;
   var selltotal;
-  var fastestFee;
-  var halfHourFee;
-  var hourFee;
   var currentfee;
 
   function htmlEncode(value){
@@ -70,21 +65,19 @@
                  buy = roundUp(jsonRes.last, 1000);
                  sell = roundUp(jsonRes.last, 1000);
                  $("#buyUSDbot").text(buy);
-                 $("#buyUSDbot2").text(buy);
+                 $("#buyUSDbot2").val(buy);
                  $("#buyamountdisplay").text("1");
                  buyamount = 1;
                  buypercent=6;
                  $("#buypercent").val(buypercent);
-                 $('#buybitcoinfees').text(fastestFee);
-                 buytotal = roundUp((buy * 1.06), 100);
-                 $("#buytotal").val(buytotal);
-                 $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' USD');
 
                  $("#sellUSDbot").text(sell);
-                 $("#sellUSDbot2").text(sell);
-                 $("#sellamountdisplay").text(sell);
+                 $("#sellUSDbot2").val(sell);
+                 $("#sellamountdisplay").text("1");
                  sellamount = 1;
-                 selltotal = roundUp((sell * 1.06), 100);
+                 sellpercent = 6;
+                 $("#sellpercent").val(sellpercent);
+                 selltotal = roundUp((sell * 0.94), 1000);
                  $("#selltotal").val(selltotal);
                  $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
         }
@@ -100,13 +93,12 @@
     var jsonRes = JSON.parse(this.responseText);
         if (jsonRes.hasOwnProperty('fastestFee')) {
 
-                fastestFee = (jsonRes.fastestFee) * 226 / 100000000;
-                halfHourFee = (jsonRes.halfHourFee) * 226 / 100000000;
-                hourFee = (jsonRes.hourFee) * 226 / 100000000;
-                buytotal = roundUp((1 + fastestFee) * buy * 1.06, 100);
+                currentfee = (jsonRes.fastestFee) * 226 / 100000000;
+                buytotal = roundUp((1 + currentfee) * buy * 1.06, 1000);
                 $("#buytotal").val(buytotal);
-                currentfee = fastestFee;
                 $('#buybitcoinfees').text(currentfee);
+                $('#buybitcoinfeesUSD').text(roundUp((currentfee*window['buy']), 100));
+
 
         }
     }
@@ -229,58 +221,52 @@
             <img class="rounded-circle" src="../../img/btc-logo.png" alt="bitcoin" width="140" height="140">
 			<br/>
 
-          <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+         <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
             <br/>
             <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10" onchange="
 
-	             if($('#buyamount').val()>0){
-		            window['buyamount']=Number($('#buyamount').val());
-    		        }else{
-    		        	$('#buyamount').val('1');
-    		        	window['buyamount']=1;
-    		        }
+               if($('#buyamount').val()>0){
+                window['buyamount']=Number($('#buyamount').val());
+                }else{
+                  $('#buyamount').val('1');
+                  window['buyamount']=1;
+                }
               window['buypercent']= Number($('#buypercent').val());
-	            window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
-	            $('#buytotal').val(window['buytotal']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
+              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 1000);
+              $('#buytotal').val(window['buytotal']);
+              //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "/> BTC at the price of $<span id="buyUSDbot2"></span> USD.
-	            <br/>
-	            <br/>
-	            Your total is $<input type="text" id="buytotal" size="10" onchange="
+              "/> BTC at the price of $
+              <input type="text" id="buyUSDbot2"   size="10" onchange="
+              window['buy'] = $('#buyUSDbot2').val();
+              window['buypercent']= Number($('#buypercent').val());
+              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 1000);
+              $('#buytotal').val(window['buytotal']);
+              //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            window['buytotal']=Number($('#buytotal').val());
+              "/> USD.
+              <br/>
+              <br/>
+              Your total is $<input type="text" id="buytotal" size="10" onchange="
+
+              window['buytotal']=Number($('#buytotal').val());
               window['buypercent'] = Number($('#buypercent').val());
-	            window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / ((window['buypercent']/100) + 1))-window['currentfee'], 10000);
-	            $('#buyamount').val(window['buyamount']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
+              window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / ((window['buypercent']/100) + 1))-window['currentfee'], 10000);
+              $('#buyamount').val(window['buyamount']);
+              //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "/> USD, including the <input type="text" id="buypercent" size="2" onchange="
+              "/> USD, including the <input type="text" id="buypercent" size="2" onchange="
               window['buyamount']=Number($('#buyamount').val());
               window['buypercent']= Number($('#buypercent').val());
-              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 100);
+              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 10000);
               $('#buytotal').val(window['buytotal']);
 
-              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
-        	   </span>
-          	<br/>
-          	<br/>
+              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC (<span id="buybitcoinfeesUSD"></span>$ USD) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
+             </span>
+            <br/>
+            <br/>
             
-            <span class="lead">
-               Process the transaction with the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val()) + window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(window['buytotal']);
-              ">Fastest Fee</span>, <input type="radio" name="radiofee" onchange="window['currentfee'] = window['halfHourFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(window['buytotal']);
-               ">Half-Hour Fee</span>, or the <input type="radio" name="radiofee" onchange="window['currentfee'] = window['hourFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(window['buytotal']);
-               ">Hour Fee</span></form>
-        	  </span>
+          
 
             <br/>
             <br/>
@@ -370,7 +356,62 @@
 
 		            "></input> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees" >transaction fee.</a>
 -->
+ <!-- Three columns of text below the carousel -->
+        <div class="row" id="sellbitcoin">
+          <div class="col-lg-12" style="text-align: center;">
+            <h3><span class="badge badge-secondary">Sell Bitcoin Calculator</span></h3><br/>
+            <img class="rounded-circle" src="../img/USD-logo.png" alt="USD" width="140" height="140">
+      <br/>
 
+          <form id="formsell" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+            <br/>
+            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
+
+               if($('#sellamount').val()>0){
+                window['sellamount']=Number($('#sellamount').val());
+                }else{
+                  $('#sellamount').val('1');
+                  window['sellamount']=1;
+                }
+              window['sellpercent']= Number($('#sellpercent').val());
+              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * ((100-window['sellpercent'])/100)), 1000);
+              $('#selltotal').val(window['selltotal']);
+              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
+
+              "/> BTC at the price of $
+              <input type="text" id="sellUSDbot2"   size="10" onchange="
+              window['sell'] = $('#sellUSDbot2').val();
+              window['sellpercent']= Number($('#sellpercent').val());
+              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * ((100-window['sellpercent'])/100)), 1000);
+              $('#selltotal').val(window['selltotal']);
+              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
+
+              "/> USD.
+              <br/>
+              <br/>
+              Your total is $<input type="text" id="selltotal" size="10" onchange="
+
+              window['selltotal']=Number($('#selltotal').val());
+              window['sellpercent'] = Number($('#sellpercent').val());
+              window['sellamount'] = roundUp((window['selltotal'] / window['sell'] / ((100-window['sellpercent'])/100)), 10000);
+              $('#sellamount').val(window['sellamount']);
+              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
+
+              "/> USD, including the <input type="text" id="sellpercent" size="2" onchange="
+              window['sellamount']=Number($('#sellamount').val());
+              window['sellpercent']= Number($('#sellpercent').val());
+              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * ((100-window['sellpercent'])/100)), 10000);
+              $('#selltotal').val(window['selltotal']);
+
+              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a>.
+             </span>
+            <br/>
+            <br/>
+            
+
+        </form>
+
+         <hr class="featurette-divider">
 					<!-- Modal -->
 					<div class="modal fade" id="transactionfees" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">

@@ -102,7 +102,7 @@
                 buytotal = roundUp((1 + currentfee) * buy * 1.06, 1000);
                 $("#buytotal").val(buytotal);
                 $('#buybitcoinfees').text(currentfee);
-                $('#buybitcoinfeesCAD').text(roundUp((currentfee*window['sell']), 100));
+                $('#buybitcoinfeesCAD').text(roundUp((currentfee*window['buy']), 100));
 
 
         }
@@ -271,32 +271,7 @@
           	<br/>
           	<br/>
             
-           <!-- <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
-               <input type="text" id="buybtcaddress" name="buybtcaddress"/>
-               <br/>
-              <br/>
-              <span class="lead">
-               Process the transaction with the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val()) + window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(window['buytotal']);
-              ">Fastest Fee</span>,
-
-
-              <input type="radio" name="radiofee" onchange="window['currentfee'] = window['halfHourFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(window['buytotal']);
-               ">Half-Hour Fee</span>,
-
-
-               or the <input type="radio" name="radiofee" onchange="window['currentfee'] = window['hourFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * (($('#buypercent').val()/100)+1)), 100);
-              $('#buytotal').val(window['buytotal']);
-               ">Hour Fee</span></form>
-        	  </span>-->
-
+           
             <br/>
             <br/>
 
@@ -389,7 +364,7 @@
         <div class="row" id="sellbitcoin">
           <div class="col-lg-12" style="text-align: center;">
             <h3><span class="badge badge-secondary">Sell Bitcoin Calculator</span></h3><br/>
-            <img class="rounded-circle" src="../img/CAD-logo.png" alt="CAD" width="140" height="140">
+            <img class="rounded-circle" src="../../img/CAD-logo.png" alt="CAD" width="140" height="140">
       <br/>
 
           <form id="formsell" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
