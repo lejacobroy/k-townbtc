@@ -33,9 +33,6 @@
   var buytotal;
   var sellamount;
   var selltotal;
-  var fastestFee;
-  var halfHourFee;
-  var hourFee;
   var currentfee;
 
   function htmlEncode(value){
@@ -77,16 +74,18 @@
                  buyamount = 1;
                  buypercent=6;
                  $("#buypercent").val(buypercent);
-                 $('#buybitcoinfees').text(fastestFee);
+                 $('#buybitcoinfees').text(currentfee);
                  buytotal = roundUp((buy * 1.06), 100);
                  $("#buytotal").val(buytotal);
                  $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' CAD');
-
-                 $("#sellCADbot").text(sell);
-                 $("#sellCADbot2").text(sell);
-                 $("#sellamountdisplay").text(sell);
+                  
+                $("#sellCADbot").text(sell);
+                 $("#sellCADbot2").val(sell);
+                 $("#sellamountdisplay").text("1");
                  sellamount = 1;
-                 selltotal = roundUp((sell * 1.06), 100);
+                 sellpercent = 6;
+                 $("#sellpercent").val(sellpercent);
+                 selltotal = roundUp((sell * 0.94), 1000);
                  $("#selltotal").val(selltotal);
                  $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
         }
@@ -102,13 +101,12 @@
     var jsonRes = JSON.parse(this.responseText);
         if (jsonRes.hasOwnProperty('fastestFee')) {
 
-                fastestFee = (jsonRes.fastestFee) * 226 / 100000000;
-                halfHourFee = (jsonRes.halfHourFee) * 226 / 100000000;
-                hourFee = (jsonRes.hourFee) * 226 / 100000000;
-                buytotal = roundUp((1 + fastestFee) * buy * 1.06, 100);
+               
+                currentfee = (jsonRes.fastestFee) * 226 / 100000000;
+                buytotal = roundUp((1 + currentfee) * buy * 1.06, 1000);
                 $("#buytotal").val(buytotal);
-                currentfee = fastestFee;
                 $('#buybitcoinfees').text(currentfee);
+                $('#buybitcoinfeesCAD').text(roundUp((currentfee*window['buy']), 100));
 
         }
     }
@@ -258,45 +256,12 @@
 	            $('#buyamount').val(window['buyamount']);
 	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
 
-	            "/> CAD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
+	            "/> CAD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC (<span id="buybitcoinfeesCAD"></span>$ CAD) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
         	   </span>
           	<br/>
           	<br/>
             
-           <!-- <span class="lead">We will send your <span id="buyamountdisplay"></span> BTC to this address : 
-               <input type="text" id="buybtcaddress" name="buybtcaddress"/>
-               <br/>
-              <br/>-->
-              <span class="lead">
-               Process the transaction with the <form><input type="radio" name="radiofee" checked onchange="window['currentfee'] = window['fastestFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val()) + window['currentfee']) * window['buy'] * 1.06), 100);
-              $('#buytotal').val(window['buytotal']);
-              ">Fastest Fee</span>,
-
-
-              <input type="radio" name="radiofee" onchange="window['currentfee'] = window['halfHourFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * 1.06), 100);
-              $('#buytotal').val(window['buytotal']);
-               ">Half-Hour Fee</span>,
-
-
-               or the <input type="radio" name="radiofee" onchange="window['currentfee'] = window['hourFee'];
-               $('#buybitcoinfees').text(window['currentfee']);
-               window['buytotal'] = roundUp(((Number($('#buyamount').val())+window['currentfee']) * window['buy'] * 1.06), 100);
-              $('#buytotal').val(window['buytotal']);
-               ">Hour Fee</span></form>
-        	  </span>
-
-            <br/>
-            <br/>
-
-            <input type="hidden" id="stripeToken" name="stripeToken" />
-            <input type="hidden" id="stripeEmail" name="stripeEmail" />
-            <input type="hidden" id="amountInCents" name="amount" />
-            <input type="hidden" id="metadata" name="metadata" />
-            <!-- <input type="button" id="buyBitcoinButton" class="btn btn-outline-secondary btn-lg"/>-->
+           
         </form>
   <script>
         var buyhandler = StripeCheckout.configure({
@@ -344,40 +309,46 @@
 
 
           </div><!-- /.col-lg-4 
-      </div>
-         <hr class="featurette-divider">
-          <div class="row" id="sellbitcoin">
+      -->
+<!-- Three columns of text below the carousel -->
+        <div class="row" id="sellbitcoin">
           <div class="col-lg-12" style="text-align: center;">
-          	<h3><span class="badge badge-secondary">Sell Bitcoin</span></h3><br/>
-            <img class="rounded-circle" src="img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
-            <form id="formsell" action="https://thawing-journey-82923.herokuapp.com/charge" method="POST">
-	            <br/>
-	            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
-	            	if($('#sellamount').val()>0){
-		            sellamount=$('#sellamount').val();
-		        }else{
-		        	$('#sellamount').val('1');
-		        	sellamount=1;
-		        }
-		            $('#sellamountdisplay').text(sellamount);
-		            selltotal = roundUp((sellamount * sell * 1.06), 100);
-		            $('#selltotal').val(selltotal);
-		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
+            <h3><span class="badge badge-secondary">sell Bitcoin</span></h3><br/>
+            <img class="rounded-circle" src="img/CAD-logo.png" alt="bitcoin" width="140" height="140">
+      <br/>
 
-		            "></input> BTC at the price of $<span id="sellCADbot2"></span> CAD.
-		            <br/>
-		            <br/>
-		            We will send you $<input type="text" id="selltotal" size="10" onchange="
+          <form id="formsell" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+            <br/>
+            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
 
-		            selltotal=$('#selltotal').val();
-		            sellamount = roundUp((selltotal / sell / 1.06), 10000);
-		            $('#sellamount').val(sellamount);
-		            $('#sellamountdisplay').text(selltotal);
-		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
+               if($('#sellamount').val()>0){
+                window['sellamount']=Number($('#sellamount').val());
+                }else{
+                  $('#sellamount').val('1');
+                  window['sellamount']=1;
+                }
+              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * 0.94), 100);
+              $('#selltotal').val(window['selltotal']);
+              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' CAD');
 
-		            "></input> CAD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees" >transaction fee.</a>
--->
+              "/> BTC at the price of $<span id="sellCADbot2"></span> CAD.
+              <br/>
+              <br/>
+              Your total is $<input type="text" id="selltotal" size="10" onchange="
 
+              window['selltotal']=Number($('#selltotal').val());
+              window['sellamount'] = roundUp((window['selltotal'] / window['sell'] / 0.94), 10000);
+              $('#sellamount').val(window['sellamount']);
+              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' CAD');
+
+              "/> CAD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="sellbitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
+             </span>
+            <br/>
+            <br/>
+            
+           
+        </form>
+    <hr class="featurette-divider">
 					<!-- Modal -->
 					<div class="modal fade" id="transactionfees" tabindex="-1" role="dialog" aria-labelledby="transactionLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
