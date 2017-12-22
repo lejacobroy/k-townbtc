@@ -99,10 +99,10 @@
         if (jsonRes.hasOwnProperty('fastestFee')) {
 
                 currentfee = (jsonRes.fastestFee) * 226 / 100000000;
-                buytotal = roundUp((1 + currentfee) * buy * 1.06, 1000);
+                buytotal = roundUp((1 + currentfee) * buy / 0.94, 1000);
                 $("#buytotal").val(buytotal);
-                $('#buybitcoinfees').text(currentfee);
-                $('#buybitcoinfeesCAD').text(roundUp((currentfee*window['buy']), 100));
+                $('#buybitcoinfees').val(currentfee);
+                $('#buybitcoinfeesCAD').val(roundUp((currentfee*window['buy']), 100));
 
 
         }
@@ -228,49 +228,44 @@
 
           <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
             <br/>
-            <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10" onchange="
 
-	             if($('#buyamount').val()>0){
-		            window['buyamount']=Number($('#buyamount').val());
-    		        }else{
-    		        	$('#buyamount').val('1');
-    		        	window['buyamount']=1;
-    		        }
-              window['buypercent']= Number($('#buypercent').val());
-	            window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 1000);
-	            $('#buytotal').val(window['buytotal']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+            <span class="lead">
+            The customer wants to buy <input type="text" id="buytotal" size="10" onchange="
+              $('#buyamount').val(roundUp(((Number($('#buytotal').val()) / Number($('#buyCADbot2').val())) * ((100-Number($('#buypercent').val()))/100))-Number($('#buybitcoinfees').val()), 10000));
+              "/>$ CAD worth of Bitcoin, at the current price of 
 
-	            "/> BTC at the price of $
               <input type="text" id="buyCADbot2"   size="10" onchange="
-              window['buy'] = $('#buyCADbot2').val();
-              window['buypercent']= Number($('#buypercent').val());
-              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 1000);
-              $('#buytotal').val(window['buytotal']);
-              //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+              $('#buyamount').val(roundUp(((Number($('#buytotal').val()) / Number($('#buyCADbot2').val())) * ((100-Number($('#buypercent').val()))/100))-Number($('#buybitcoinfees').val()), 10000));
+              
+              $('#buybitcoinfeesCAD').val(Number($('#buybitcoinfees').val()) * Number($('#buyCADbot2').val()));
+              "/> CAD/BTC.
+              <br/>
+            <br/>
+            You charge a <input type="text" id="buypercent" size="2" onchange="
+              $('#buyamount').val(roundUp(((Number($('#buytotal').val()) / Number($('#buyCADbot2').val())) * ((100-Number($('#buypercent').val()))/100))-Number($('#buybitcoinfees').val()), 10000));
+              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <input type="text" size="9" id="buybitcoinfees" onchange="
+              $('#buyamount').val(roundUp(((Number($('#buytotal').val()) / Number($('#buyCADbot2').val())) * ((100-Number($('#buypercent').val()))/100))-Number($('#buybitcoinfees').val()), 10000));
 
-              "/> CAD.
-	            <br/>
-	            <br/>
-	            Your total is $<input type="text" id="buytotal" size="10" onchange="
+              $('#buybitcoinfeesCAD').val(Number($('#buybitcoinfees').val()) * Number($('#buyCADbot2').val()));
 
-	            window['buytotal']=Number($('#buytotal').val());
-              window['buypercent'] = Number($('#buypercent').val());
-	            window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / ((window['buypercent']/100) + 1))-window['currentfee'], 10000);
-	            $('#buyamount').val(window['buyamount']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' CAD');
+              "/> BTC (<input type="text" id="buybitcoinfeesCAD" size="5" onchange="
 
-	            "/> CAD, including the <input type="text" id="buypercent" size="2" onchange="
-              window['buyamount']=Number($('#buyamount').val());
-              window['buypercent']= Number($('#buypercent').val());
-              window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * ((window['buypercent']/100) + 1)), 10000);
-              $('#buytotal').val(window['buytotal']);
+                $('#buybitcoinfees').val(Number($('#buybitcoinfeesCAD').val() / Number($('#buyCADbot2').val())));
+                $('#buyamount').val(roundUp(((Number($('#buytotal').val()) / Number($('#buyCADbot2').val())) * ((100-Number($('#buypercent').val()))/100))-Number($('#buybitcoinfees').val()), 10000));
 
-              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC (<span id="buybitcoinfeesCAD"></span>$ CAD) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
-        	   </span>
-          	<br/>
-          	<br/>
-            
+              "/>$ CAD) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
+              <br/>
+              <br/>
+              <strong>** Be sure to copy the real transaction fee before doing the tranfer **</strong>
+              <br/>
+              <br/>
+              You will need to send <input type="text" id="buyamount" value="1" size="10" onchange="
+                if($('#buyamount').val()<=0){
+                  $('#buyamount').val('1');
+                }
+                $('#buytotal').val(roundUp((Number($('#buyamount').val())+Number($('#buybitcoinfees').val())) * Number($('#buyCADbot2').val()) / ((100-Number($('#buypercent').val()))/100), 1000));
+              "/> BTC to the customer.
+            </span>
            
             <br/>
             <br/>
@@ -326,93 +321,49 @@
         </script>
 
 
-          </div><!-- /.col-lg-4 
-      </div>
-         <hr class="featurette-divider">
-          <div class="row" id="sellbitcoin">
-          <div class="col-lg-12" style="text-align: center;">
-          	<h3><span class="badge badge-secondary">Sell Bitcoin</span></h3><br/>
-            <img class="rounded-circle" src="../img/CAD-logo.png" alt="Generic placeholder image" width="140" height="140">
-            <form id="formsell" action="https://thawing-journey-82923.herokuapp.com/charge" method="POST">
-	            <br/>
-	            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
-	            	if($('#sellamount').val()>0){
-		            sellamount=$('#sellamount').val();
-		        }else{
-		        	$('#sellamount').val('1');
-		        	sellamount=1;
-		        }
-		            $('#sellamountdisplay').text(sellamount);
-		            selltotal = roundUp((sellamount * sell * 1.06), 100);
-		            $('#selltotal').val(selltotal);
-		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
+          </div>
+</div>
+<hr class="featurette-divider">
 
-		            "></input> BTC at the price of $<span id="sellCADbot2"></span> CAD.
-		            <br/>
-		            <br/>
-		            We will send you $<input type="text" id="selltotal" size="10" onchange="
 
-		            selltotal=$('#selltotal').val();
-		            sellamount = roundUp((selltotal / sell / 1.06), 10000);
-		            $('#sellamount').val(sellamount);
-		            $('#sellamountdisplay').text(selltotal);
-		            $('#sellBitcoinButton').text('Buy $' + selltotal + ' CAD for ' + sellamount + ' BTC');
-
-		            "></input> CAD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees" >transaction fee.</a>
--->
  <!-- Three columns of text below the carousel -->
         <div class="row" id="sellbitcoin">
           <div class="col-lg-12" style="text-align: center;">
             <h3><span class="badge badge-secondary">Sell Bitcoin Calculator</span></h3><br/>
-            <img class="rounded-circle" src="../../img/CAD-logo.png" alt="CAD" width="140" height="140">
+            <img class="rounded-circle" src="../img/CAD-logo.png" alt="CAD" width="140" height="140">
       <br/>
 
           <form id="formsell" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
             <br/>
-            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
-
-               if($('#sellamount').val()>0){
-                window['sellamount']=Number($('#sellamount').val());
-                }else{
-                  $('#sellamount').val('1');
-                  window['sellamount']=1;
-                }
-              window['sellpercent']= Number($('#sellpercent').val());
-              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * ((100-window['sellpercent'])/100)), 1000);
-              $('#selltotal').val(window['selltotal']);
-              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' CAD');
-
-              "/> BTC at the price of $
-              <input type="text" id="sellCADbot2"   size="10" onchange="
-              window['sell'] = $('#sellCADbot2').val();
-              window['sellpercent']= Number($('#sellpercent').val());
-              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * ((100-window['sellpercent'])/100)), 1000);
-              $('#selltotal').val(window['selltotal']);
-              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' CAD');
-
-              "/> CAD.
-              <br/>
-              <br/>
-              Your total is $<input type="text" id="selltotal" size="10" onchange="
-
-              window['selltotal']=Number($('#selltotal').val());
-              window['sellpercent'] = Number($('#sellpercent').val());
-              window['sellamount'] = roundUp((window['selltotal'] / window['sell'] / ((100-window['sellpercent'])/100)), 10000);
-              $('#sellamount').val(window['sellamount']);
-              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' CAD');
-
-              "/> CAD, including the <input type="text" id="sellpercent" size="2" onchange="
-              window['sellamount']=Number($('#sellamount').val());
-              window['sellpercent']= Number($('#sellpercent').val());
-              window['selltotal'] = roundUp(((window['sellamount']) * window['sell'] * ((100-window['sellpercent'])/100)), 10000);
-              $('#selltotal').val(window['selltotal']);
-
-              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a>.
-             </span>
-            <br/>
-            <br/>
+          
             
+                   <span class="lead">
+            The customer wants to sell for <input type="text" id="selltotal" size="10" onchange="
+              $('#sellamount').val(roundUp(((Number($('#selltotal').val()) / Number($('#sellCADbot2').val())) * ((100-Number($('#sellpercent').val()))/100)), 10000));
+              "/>$ CAD worth of Bitcoin, at the current price of 
 
+              <input type="text" id="sellCADbot2"   size="10" onchange="
+              $('#sellamount').val(roundUp(((Number($('#selltotal').val()) / Number($('#sellCADbot2').val())) * ((100-Number($('#sellpercent').val()))/100)), 10000));
+              
+              $('#sellbitcoinfeesCAD').val(Number($('#sellbitcoinfees').val()) * Number($('#sellCADbot2').val()));
+              "/> CAD/BTC.
+              <br/>
+            <br/>
+            You charge a <input type="text" id="sellpercent" size="2" onchange="
+              $('#sellamount').val(roundUp(((Number($('#selltotal').val()) / Number($('#sellCADbot2').val())) * ((100-Number($('#sellpercent').val()))/100)), 10000));
+              "/>% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a>.  
+              <br/>
+              <br/>
+              <strong>** Be sure to warn the customer that he will have to pay fees for sending BTC **</strong>
+              <br/>
+              <br/>
+              The customer will need to send you <input type="text" id="sellamount" value="1" size="10" onchange="
+                if($('#sellamount').val()<=0){
+                  $('#sellamount').val('1');
+                }
+                $('#selltotal').val(roundUp(Number($('#sellamount').val()) * Number($('#sellCADbot2').val()) * ((100-Number($('#sellpercent').val()))/100), 1000));
+              "/> BTC.
+            </span>
         </form>
 
          <hr class="featurette-divider">
