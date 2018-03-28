@@ -86,7 +86,7 @@
                  sellamount = 1;
                  sellpercent = 6;
                  $("#sellpercent").val(sellpercent);
-                 selltotal = roundUp((sell * 0.96), 1000);
+                 selltotal = roundUp((sell * 0.985), 1000);
                  $("#selltotal").val(selltotal);
                  $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
         }
@@ -331,7 +331,7 @@
                   $('#sellamount').val('1');
                   window['sellamount']=1;
                 }
-              window['selltotal'] = roundUp(((window['sellamount']) * 0.96 * window['sell']), 1000);
+              window['selltotal'] = roundUp(((window['sellamount']) * 0.985 * window['sell']), 1000);
               $('#selltotal').val(window['selltotal']);
               //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
 
@@ -341,11 +341,11 @@
               Your total is $<input type="text" id="selltotal" size="10" onchange="
 
               window['selltotal']=Number($('#selltotal').val());
-              window['sellamount'] = roundUp((window['selltotal'] / 0.96 / window['sell']), 10000);
+              window['sellamount'] = roundUp((window['selltotal'] / 0.985 / window['sell']), 10000);
               $('#sellamount').val(window['sellamount']);
               //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
 
-              "/> USD, including the <strong>winter special 0%</strong> <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="sellbitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
+              "/> USD, including the 1.5%</strong> <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="sellbitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
              </span>
             <br/>
             <br/>
