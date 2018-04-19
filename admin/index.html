@@ -72,7 +72,7 @@
                  $("#buyCADbot2").val(buy);
                  $("#buyamountdisplay").text("1");
                  buyamount = 1;
-                 buypercent=6;
+                 buypercent=4;
                  $("#buypercent").val(buypercent);
                  $('#buyBitcoinButton').val('Buy ' + buyamount + ' Bitcoin for $' + buytotal + ' CAD');
 
@@ -99,7 +99,7 @@
         if (jsonRes.hasOwnProperty('fastestFee')) {
 
                 currentfee = (jsonRes.fastestFee) * 226 / 100000000;
-                buytotal = roundUp((1 + currentfee) * buy / 0.94, 1000);
+                buytotal = roundUp((1 + currentfee) * buy / 0.96, 1000);
                 $("#buytotal").val(buytotal);
                 $('#buybitcoinfees').val(currentfee);
                 $('#buybitcoinfeesCAD').val(roundUp((currentfee*window['buy']), 100));
