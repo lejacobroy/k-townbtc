@@ -109,6 +109,31 @@
                 $('#buybitcoinfees').text(currentfee);
                 $('#buybitcoinfeesUSD').text(roundUp((currentfee*window['buy']), 100));
 
+                $('#sellbitcoinfees').text(currentfee);
+
+                 $("#buyBTCtotal").val('1');
+                  $('#buyUSDtotal').val(
+                        roundUp(
+                          (Number(window['buy'])) 
+                          * 
+                          (Number($('#buyBTCtotal').val())
+                          *
+                          1.04 )
+                          + (window['currentfee'] * (Number(window['buy'])))
+                        , 100)
+                      )
+                  $("#sellBTCtotal").val('1');
+                  $('#sellUSDtotal').val(
+                        roundUp(
+                          (Number(window['sell'])) 
+                          * 
+                          (Number($('#sellBTCtotal').val())
+                          *
+                          0.96 )
+                          
+                        , 100)
+                      )
+
         }
     }
 
@@ -162,7 +187,7 @@
 				<li class="nav-item">
 				  <a class="navbar-brand nav-link" href="../  ">
 				    <img src="../img/CA.png" width="30" height="30" class="d-inline-block align-top" alt="">
-				    CAD
+				    USD
 				  </a>
 				</li>
 			</ul>
@@ -234,125 +259,89 @@
           <div class="col-lg-12" style="text-align: center;">
           	<h3><span class="badge badge-secondary">Buy Bitcoin</span></h3><br/>
             <img class="rounded-circle" src="../img/btc-logo.png" alt="bitcoin" width="140" height="140">
-			<br/>
-
-          <form id="formbuy" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
+			 <br/>
             <br/>
-            <span class="lead">Buy <input type="text" id="buyamount" value="1" size="10" onchange="
+            <span class="lead">
+              <!--
+buy X btc, at the price of X USD for 1 BTC.
+Your total is $ USD, including the 4% transaction fee and the 0.000226 BTC (2.64$ USD) Bitcoin fee. 
+-->
+                    Buy <input type="text" id="buyBTCtotal" size="10" onchange="
+                      $('#buyUSDtotal').val(
+                        roundUp(
+                          (Number(window['buy'])) 
+                          * 
+                          (Number($('#buyBTCtotal').val())
+                          *
+                          1.04 )
+                          + (window['currentfee'] * (Number(window['buy'])))
+                        , 100)
+                      )
+                    "/> BTC, at the current price of $ <span id="buyUSDbot2"></span> USD for 1 BTC<br/>
+                    Your total is $<input type="text" id="buyUSDtotal" size="10" onchange="
+                        $('#buyBTCtotal').val(
+                        roundUp(
+                          (Number($('#buyUSDtotal').val()))
+                          /
+                          (Number(window['buy'])
+                          * 1.04)
+                           + window['currentfee']
+                        , 10000)
+                      );
+                      "/> USD, including the 4% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a>, 
+and the <span id="buybitcoinfees"></span> BTC (<span id="buybitcoinfeesUSD"></span>$ USD) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
 
-	             if($('#buyamount').val()>0){
-		            window['buyamount']=Number($('#buyamount').val());
-    		        }else{
-    		        	$('#buyamount').val('1');
-    		        	window['buyamount']=1;
-    		        }
-	            window['buytotal'] = roundUp(((window['buyamount'] + Number(window['currentfee'])) * window['buy'] * 1.06), 1000);
-	            $('#buytotal').val(window['buytotal']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
 
-	            "/> BTC at the price of $<span id="buyUSDbot2"></span> USD.
-	            <br/>
-	            <br/>
-	            Your total is $<input type="text" id="buytotal" size="10" onchange="
+            </span>
 
-	            window['buytotal']=Number($('#buytotal').val());
-	            window['buyamount'] = roundUp((window['buytotal'] / window['buy'] / 1.06) - window['currentfee'], 10000);
-	            $('#buyamount').val(window['buyamount']);
-	            //$('#buyBitcoinButton').val('Buy ' + buyamount + ' BTC for $' + buytotal + ' USD');
-
-	            "/> USD, including the 6% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="buybitcoinfees"></span> BTC (<span id="buybitcoinfeesUSD"></span>$ USD) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
-        	   </span>
-          	<br/>
-          	<br/>
-            
-           
-        </form>
-  <script>
-        var buyhandler = StripeCheckout.configure({
-          key: 'pk_test_UNxP2GG9bvyICle3JasumBaD',
-          image: '../img/headdress2.png',
-          locale: 'auto',
-          token: function(token) {
-              $("#stripeToken").val(token.id);
-              $("#stripeEmail").val(token.email);
-              $("#amountInCents").val(roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100);
-              
-              function getmetadata(){
-              var metadata = new Object();
-              metadata.email = token.email;
-              metadata.btUSDdress = $('#buybtUSDdress').val();
-              metadata.btcamount = $('#buyamount').val();
-              metadata.btcprice = buy;
-              var output = htmlEncode(JSON.stringify(metadata));
-              return output;
-              }
-              $("#metadata").val(getmetadata());
-              $("#formbuy").submit();
-            }
-          });
-
-        $('#buyBitcoinButton').on('click', function(e) {
-          // Open Checkout with further options:
-
-          buyhandler.open({
-            name: 'K-TownBTC',
-            description: "Buy " + $('#buyamount').val() + " BTC for $" + roundUp(($('#buyamount').val() * buy * 1.06), 100) + " USD",
-            zipCode: true,
-            bitcoin:  false,
-            currency:   "USD",
-            amount: roundUp(($('#buyamount').val() * buy * 1.06), 100) * 100,
-          });
-          e.preventDefault();
-        });
-
-        // Close Checkout on page navigation:
-        window.addEventListener('popstate', function() {
-          buyhandler.close();
-        });
-        </script>
-
+            <br/>
+            <br/>
 
           </div><!-- /.col-lg-4 
       -->
+    </div>
 <!-- Three columns of text below the carousel -->
         <div class="row" id="sellbitcoin">
           <div class="col-lg-12" style="text-align: center;">
             <h3><span class="badge badge-secondary">sell Bitcoin</span></h3><br/>
-            <img class="rounded-circle" src="../img/USD-logo.png" alt="bitcoin" width="140" height="140">
-      <br/>
-
-          <form id="formsell" action="https://evening-atoll-59394.herokuapp.com/" method="POST">
-            <br/>
-            <span class="lead">Sell <input type="text" id="sellamount" value="1" size="10" onchange="
-
-               if($('#sellamount').val()>0){
-                window['sellamount']=Number($('#sellamount').val());
-                }else{
-                  $('#sellamount').val('1');
-                  window['sellamount']=1;
-                }
-              window['selltotal'] = roundUp(((window['sellamount']) * 0.985 * window['sell']), 1000);
-              $('#selltotal').val(window['selltotal']);
-              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
-
-              "/> BTC at the price of $<span id="sellUSDbot2"></span> USD.
-              <br/>
-              <br/>
-              Your total is $<input type="text" id="selltotal" size="10" onchange="
-
-              window['selltotal']=Number($('#selltotal').val());
-              window['sellamount'] = roundUp((window['selltotal'] / 0.985 / window['sell']), 10000);
-              $('#sellamount').val(window['sellamount']);
-              //$('#sellBitcoinButton').val('sell ' + sellamount + ' BTC for $' + selltotal + ' USD');
-
-              "/> USD, including the 1.5%</strong> <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a> and the <span id="sellbitcoinfees"></span> BTC <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
-             </span>
+            <img class="rounded-circle" src="img/USD-logo.png" alt="bitcoin" width="140" height="140">
             <br/>
             <br/>
-            
-           
-        </form>
-    <hr class="featurette-divider">
+              <span class="lead">
+             <!--
+                sell X btc, at the price of X USD for 1 BTC.
+                Your total is $ USD, including the 4% transaction fee. Note : You will need to pay a smal bitcoin Fee. 
+                -->
+                    Sell <input type="text" id="sellBTCtotal" size="10" onchange="
+                      $('#sellUSDtotal').val(
+                        roundUp(
+                          (Number(window['sell'])) 
+                          * 
+                          (Number($('#sellBTCtotal').val())
+                          *
+                          0.96 )
+                        , 100)
+                      )
+                    "/> BTC, at the current price of $ <span id="sellUSDbot2"></span> USD for 1 BTC<br/>
+                    Your total is $<input type="text" id="sellUSDtotal" size="10" onchange="
+                        $('#sellBTCtotal').val(
+                        roundUp(
+                          (Number($('#sellUSDtotal').val()))
+                          /
+                          (Number(window['sell'])
+                          * 0.96)
+                        , 10000)
+                      );
+                      "/> USD, including the 4% <a href="#" data-toggle="modal" data-target="#transactionfees">transaction fee</a>. <br/>Note : You will need to pay the small (<span id="sellbitcoinfees"></span> BTC) <a href="#" data-toggle="modal" data-target="#bitcoinfees">Bitcoin fee.</a>
+
+            </span>
+
+
+            <br/>
+            <br/>
+            </div>
+ <hr class="featurette-divider">
+
 					<!-- Modal -->
 					<div class="modal fade" id="transactionfees" tabindex="-1" role="dialog" aria-labelledby="transactionLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
