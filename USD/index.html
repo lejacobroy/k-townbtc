@@ -89,6 +89,28 @@
                  selltotal = roundUp((sell * 0.985), 1000);
                  $("#selltotal").val(selltotal);
                  $('#sellBitcoinButton').text('Buy $' + selltotal + ' USD for ' + sellamount + ' BTC');
+                 $("#buyBTCtotal").val('1');
+                  $('#buyUSDtotal').val(
+                        roundUp(
+                          (Number(window['buy'])) 
+                          * 
+                          (Number($('#buyBTCtotal').val())
+                          *
+                          1.04 )
+                          + (window['currentfee'] * (Number(window['buy'])))
+                        , 100)
+                      )
+                  $("#sellBTCtotal").val('1');
+                  $('#sellUSDtotal').val(
+                        roundUp(
+                          (Number(window['sell'])) 
+                          * 
+                          (Number($('#sellBTCtotal').val())
+                          *
+                          0.96 )
+                          
+                        , 100)
+                      )
         }
     }
 
