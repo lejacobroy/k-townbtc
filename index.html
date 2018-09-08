@@ -247,6 +247,18 @@
       <div class="container marketing">
     <hr class="featurette-divider">
 
+        <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading">Easier than ever. <span class="text-muted">Credit cards and E-Transfer accepted.</span></h2>
+            <p class="lead">To further facilitate transfers, we are now accepting Visa, Mastercard and E-Transfer transactions to buy and sell Bitcoin, <a href="#" data-toggle="modal" data-target="#conditions">under certain conditions</a>. Call us and setup a meeting, you'll be amazed by how easy it can be!</p>
+          </div>
+          <div class="col-md-5 order-md-1">
+            <img class="featurette-image img-fluid mx-auto" src="img/card.png" alt="Generic placeholder image">
+          </div>
+        </div>
+      </div>
+<hr class="featurette-divider">
+
  <!-- Three columns of text below the carousel -->
         <div class="row" id="buybitcoin">
           <div class="col-lg-12" style="text-align: center;">
@@ -379,7 +391,30 @@ and the <span id="buybitcoinfees"></span> BTC (<span id="buybitcoinfeesCAD"></sp
 					    </div>
 					  </div>
 					</div>
-        
+                  <!-- Modal -->
+          <div class="modal fade" id="conditions" tabindex="-1" role="dialog" aria-labelledby="transactionLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="transactionLabel">Transaction Conditions</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  When doing transactions in cash, it needs to be at our location. We do not require any ID.
+                  <br/><br/>
+                  When doing transactions using Visa, Mastercard or E-Transfer <strong>at our location</strong>, we require two (2) valid ID. Currently capped at 2000$ CAD.
+                  <br/><br/>
+                  When doing transactions using Visa, Mastercard or E-Transfer <strong>by email, text or phone</strong>, we require two (2) valid ID, and a 48h buffer before we release the funds. Currently capped at 2000$ CAD.
+                  <br/><br/>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Understood!</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div><!-- /.row -->
 
         <!-- START THE FEATURETTES -->
